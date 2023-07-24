@@ -1,5 +1,6 @@
-/back/node_modules
-/front/node_modules
-/back/.env
-/back/package-lock.json
+/back/node_modules/
+/front/node_modules/
 /front/package-lock.json
+/back/package-lock.json
+node_modules/
+/.idea/git_toolbox_prj.xml
