@@ -1,4 +1,6 @@
 import Message from "../models/message.js";
+import User from "../models/user.js";
+import { addPoints } from "../services/pointsService.js";
 
 export const getAllMessages = async (req, res) => {
     try {
@@ -80,6 +82,22 @@ export const deleteMessage = async (req, res) => {
         res.status(500).json({
             message:
                 "Une erreur est survenue lors de la suppression du message.",
+        });
+    }
+};
+
+export const addPointsToMessageSender = async (req, res) => {
+    try {
+        const pointsToAdd = 50;
+        const message = await Message.findById(req.params.messageId);
+        if (!message) {
+            return res.status(404).json({ message: "Message non trouvé." });
+        }
+        addPoints(message.fromUser, pointsToAdd);
+        res.json({ message: `L'employé a reçu ${pointsToAdd} points` });
+    } catch (err) {
+        res.status(500).json({
+            message: `Une erreur est survenue lors de l'ajout des points: ${err}`,
         });
     }
 };
