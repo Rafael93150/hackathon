@@ -3,7 +3,9 @@ import mongoose from "mongoose";
 import auth from "./src/router/authRouter.js";
 import messages from "./src/router/messagesRouter.js";
 import calendarRouter from './src/router/calendarRouter.js';
+import users from "./src/router/userRouter.js";
 import dotenv from "dotenv";
+import authMiddleware from "./src/middlewares/authMiddleware.js";
 
 const app = express();
 dotenv.config();
@@ -24,7 +26,8 @@ app.use((req, res, next) => {
 });
 
 app.use("/auth", auth);
-app.use("/messages", messages);
+app.use("/messages", authMiddleware, messages);
+app.use("/users", authMiddleware, users);
 
 // Utilisez le routeur pour les routes liées à l'API Google Calendar
 app.use('/calendar', calendarRouter);
