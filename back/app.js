@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import auth from "./src/router/authRouter.js";
+import messages from "./src/router/messagesRouter.js";
 import dotenv from "dotenv";
 
 const app = express();
@@ -22,6 +23,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/auth", auth);
+app.use("/messages", messages);
 
 try {
     await mongoose.connect(process.env.DB_URI);
