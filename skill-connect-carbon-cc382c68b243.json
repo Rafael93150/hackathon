@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "skill-connect-carbon",
+  "private_key_id": "cc382c68b243ed3cd99bd1a36507333a436c05af",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC1uOBipALwX8Fl\ncvn3L2QoAbJPWZwmvHCDho7G3Ax2XJJIRgYoADNBnPhR+xaoTgRZIw5k8lePMwr+\nIYeNgcbnFl47pukiuE+j9q73MUaT9m4h6K0rAZZuWU7t/4lHpE+pgI7h1KFRdcKu\n0Yx2QI+GVjR0o1xvvwjkmyJZuVUNDw6aHHXUoWDkei+YrTDOXOwQwpcT5Z67zpSR\n6+7xwZKp/37SKTzt1e4yptQ2douiQ3so9vcMYCYRwnkPRWdap7qT23n0kAVFvE+2\n6uEpiQE4R2ZJtbfxrmOmNTzbjidJ4c0d96wsDawlS0sUSBp/Lyjme/jUEK/E4khD\ntVrYc8xrAgMBAAECggEAAVI9S2pO3SmNEexClgIBs+rDPaF0qbFwDfzB9/8slgW5\nSI49yDesJ7t48LunIAUlMfK3zZMXgOKJn2xl/GjnpdF7UOq3Qjnd1l7aSdDRZw0B\nIvz6mVfzHI1IriFQAbXXoG9fWpP9skZtanD6mPeCM6NX0UtIxkU4ztSz7LwUuroQ\nqW6XzRRr0fvcPGPkEd4wiBYFi61pRe8KJwxy/HIj9KWs2vgWhPC1jz01yr0kcFd5\nCjZb9xKixWIaBuT/csL4AGbomDKOJpHReTJz0IxOtsBfPtvpCL1jUsKq/28GTzUr\ncIJWB1PJw30+pAnQOW92/RvVeJBMQazKI01Cxx/LYQKBgQDdLOsgHjBpJwV+U/OZ\nhYCFgV3XvqJL/4SX7oApNKF5YyWsDMRGbVGwdDVQZlT+UV861jMfCRLTsiQfSpIO\n5GyaF5zAVHIRgAwO31fungTUEqhk4OvkVg5L1Nk36kdpaEmT9KxO9QWpuDp7oZav\nHGqSMxm9TxknlxU06k22kd7m4QKBgQDSVa92qSjC3zSkPWdpv3Q6W4UuKxyq7YxK\nfgcE7BEbzvlASu6BXb26JS6cSQw8Mx8k0vQZ3NWZR8d/pYbWk45CZs2ivD4AD9iG\nI6KFe5oQGo+yCmrKZN4cksZBmOLze0Jz5OpevSx+Ycdn4AxXpHrB6O98lPCk77lM\nP6vUa+G4ywKBgHyWkfgsqU6CaajIt58SQdxyjB88xoWS8Oj4s38Co7cSL6VkJ6gY\nanzAaUvZ6SS9R6yH/pIL9WwEnC54PiBfcgG3LVh1+S98ds5l502F++hOfkcdICQm\nibUTuCy0LvfkhBXxLKLpiQAaw+7ijlQj6LBkUqp+BQh1JcACADbIosxhAoGBAICU\nDtpMGHXgOu739oLHngaasfSCOFkpNCzJlALnSKImSWqLI/gDVRs45aB2aztVyQEa\n0EwLGqxEG+mlR6NeuoVPEQAdcQ1aonOFzzEoWQrlIdil05h8RudStk2dZ4eOXxY3\n5yoZHNz5awvOA92D1+M4QUZ4Sg+Z2D2LYsBNXsQ3AoGBAK2ea6U2Ip6c4ieXSKmc\ndcnLrOCvekKklI7wvM01YpcOR52ofO2ggLLITTf1u0km3dIeS+Po3rmzDpnJwJWX\neKyIkEVfwbxhPwjYUGMQF50t9H3N+1vWqAgmlEX8YHkg41L6iSfaKdhcFqKhIW7N\nOm9epPbnq53MdIf6HHQ+/qGU\n-----END PRIVATE KEY-----\n",
+  "client_email": "skill-connect-carbon-api@skill-connect-carbon.iam.gserviceaccount.com",
+  "client_id": "106855380176679049409",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/skill-connect-carbon-api%40skill-connect-carbon.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
