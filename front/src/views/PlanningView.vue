@@ -5,8 +5,9 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import axios from "axios";
-import { reactive, watch, watchEffect } from "vue";
+import {reactive} from "vue";
 import SectionMain from "@/components/SectionMain.vue";
+import axiosInstance from "@/utils/axiosInstance";
 
 const state = reactive({
   calendarOptions: {
@@ -22,7 +23,7 @@ const state = reactive({
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
-    weekends: true
+    weekends: true,
   },
   currentEvents: [],
   openModal: false,
@@ -30,29 +31,30 @@ const state = reactive({
   newEvent: {
     title: "",
     start: "",
-    end: ""
+    end: "",
   }
 });
 
-const eventsPromise = axios.get("http://localhost:3000/calendar/events").then((response) => {
-  return response.data.map((event) => {
-    return {
-      id: event.id,
-      title: event.summary,
-      start: event.start.dateTime,
-      end: event.end.dateTime
-    };
-  });
-});
+const init = async () => {
+  await fetchEvents();
+};
 
-watchEffect(() => {
-  eventsPromise.then((events) => {
-    state.calendarOptions.events = events;
-    state.calendarOptions.eventClick = handleEventClick;
-    state.calendarOptions.select = handleDateSelect;
-  });
-});
-
+const fetchEvents = async () => {
+  try {
+    state.calendarOptions.events = await axiosInstance.get("calendar/events").then((response) => {
+      return response.data.map((event) => {
+        return {
+          id: event.id,
+          title: event.summary,
+          start: event.start.dateTime,
+          end: event.end.dateTime,
+        };
+      });
+    });
+  } catch (error) {
+    console.error("Error fetching events:", error);
+  }
+};
 const handleWeekendsToggle = () => {
   state.calendarOptions.weekends = !state.calendarOptions.weekends;
 };
@@ -116,6 +118,8 @@ const formatDate = (date) => {
   return date ? new Date(date).toLocaleString() : "";
 };
 
+init();
+
 </script>
 
 <template>
@@ -136,7 +140,12 @@ const formatDate = (date) => {
       <div class="demo-app-main">
         <FullCalendar
           class="demo-app-calendar"
-          :options="state.calendarOptions"
+          :options="{
+            ...state.calendarOptions,
+            events: state.calendarOptions.events || [],
+            eventClick: handleEventClick,
+            select: handleDateSelect
+          }"
         />
       </div>
 
