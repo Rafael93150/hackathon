@@ -21,20 +21,20 @@ const userSwitchVal = ref(false);
       <UserAvatarCurrentUser class="lg:mx-12" />
       <div class="space-y-3 text-center md:text-left lg:mx-12">
         <div class="flex justify-center md:block">
-          <FormCheckRadio
+          <!-- <FormCheckRadio
             v-model="userSwitchVal"
             name="notifications-switch"
             type="switch"
             label="Notifications"
             :input-value="true"
-          />
+          /> -->
         </div>
         <h1 class="text-2xl">
-          Howdy, <b>{{ userName }}</b
-          >!
+           <b>{{ userName }}</b>
         </h1>
+        <p>Actuellement chez #Entreprise</p>
         <div class="flex justify-center md:block">
-          <PillTag label="Verified" color="info" :icon="mdiCheckDecagram" />
+          <PillTag label="Niveau #niveau" color="info" :icon="mdiCheckDecagram" />
         </div>
       </div>
     </BaseLevel>
