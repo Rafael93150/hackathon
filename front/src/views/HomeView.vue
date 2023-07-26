@@ -1,6 +1,5 @@
 <script setup>
-import { computed, ref, onMounted } from "vue";
-import { useMainStore } from "@/stores/main";
+import { ref, onMounted } from "vue";
 import {
   mdiAccountMultiple,
   mdiCartOutline,
@@ -24,6 +23,7 @@ import SectionTitleLineWithButton from "@/components/SectionTitleLineWithButton.
 import SectionBannerStarOnGitHub from "@/components/SectionBannerStarOnGitHub.vue";
 
 const chartData = ref(null);
+
 
 const fillChartData = () => {
   chartData.value = chartConfig.sampleChartData();

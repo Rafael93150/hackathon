@@ -1,24 +1,26 @@
 import {defineStore} from "pinia";
 export const useMainStore = defineStore("main", {
   state: () => ({
-    id: null,
-    userName: null,
-    userEmail: null,
-    userRole: null,
+    currentUser : {
+      id: "",
+      userEmail: "",
+      userName: "",
+      userRole: ""
+    }
   }),
-  actions: {
-    setUser(payload) {
+  actions: {      
+    async setUser(payload) {
       if (payload._id) {
-        this.id = payload._id;
+        this.currentUser.id = payload._id;
       }
       if (payload.email) {
-        this.userEmail = payload.email;
+        this.currentUser.userEmail = payload.email;
       }
       if (payload.firstname && payload.lastname) {
-        this.userName = payload.firstname + " " + payload.lastname;
+        this.currentUser.userName = payload.firstname + " " + payload.lastname;
       }
       if (payload.role) {
-        this.userRole = payload.role;
+        this.currentUser.userRole = payload.role;
       }
     },
   },

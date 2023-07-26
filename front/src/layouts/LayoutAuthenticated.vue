@@ -32,6 +32,7 @@ const menuClick = (event, item) => {
 
   if (item.isLogout) {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     location.reload();
   }
 };

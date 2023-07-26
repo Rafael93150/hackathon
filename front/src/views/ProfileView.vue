@@ -1,12 +1,10 @@
 <script setup>
 import { reactive } from "vue";
-import { useMainStore } from "@/stores/main";
 import {
   mdiAccount,
   mdiMail,
   mdiAsterisk,
   mdiFormTextboxPassword,
-  mdiGithub,
 } from "@mdi/js";
 import SectionMain from "@/components/SectionMain.vue";
 import CardBox from "@/components/CardBox.vue";
@@ -20,9 +18,6 @@ import UserCard from "@/components/UserCard.vue";
 import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
 import SectionTitleLineWithButton from "@/components/SectionTitleLineWithButton.vue";
 import axiosInstance from "@/utils/axiosInstance";
-import axios from "axios";
-
-const mainStore = useMainStore();
 
 const state = reactive({
   profile : {
@@ -38,19 +33,18 @@ const state = reactive({
   response: "",
 });
 
-// const connectedUser = computed(() => mainStore.user);
+const connectedUser = JSON.parse(localStorage.getItem("user"));
 
-axiosInstance.get("/users/" + '64bec9d34cbb87721464b1f6').then((response) => {
+axiosInstance.get("/users/" + connectedUser._id ).then((response) => {
     state.profile = response.data
 });
 
-
 const submitProfile = () => {
   try {
-    axiosInstance.put("/users/" + '64bec9d34cbb87721464b1f6', state.profile).then((response) => {
-      console.log(response);
+    axiosInstance.put("/users/" +  connectedUser._id  , state.profile).then((response) => {
       state.response = response
-      mainStore.setUser(response.data);
+      if (response.data.user)
+        localStorage.setItem("user", JSON.stringify(response.data.user));
     });
   }
   catch (error) {
@@ -74,7 +68,7 @@ const submitPass = () => {
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <CardBox is-form @submit.prevent="submitProfile" class="shadow">
           <span v-if="state.response" :class="`${state.response.status !== 200 ? 'text-red-600' : 'text-black'} text-lg text-center`">
-            {{ state.response.data }}
+            {{ state.response.data.message }}
           </span> 
           <FormField label="Avatar" help="500kb max.">
             <FormFilePicker label="Charger" />

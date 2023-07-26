@@ -60,9 +60,12 @@ export const updateUser = async (req, res) => {
         if (skills) userQuery.skills = skills;
         if (companies) userQuery.companies = companies;
 
-        await User.findByIdAndUpdate(userId, userQuery);
+        const updatedUser = await User.findByIdAndUpdate(userId, userQuery);
 
-        res.json("Le profil a été modifié avec succès");
+        res.json({
+            message: "Le profil a bien été modifié",
+            user : updatedUser
+        });
     } catch (error) {
         res.status(500).json({
             error: `Une erreur est survenue lors de la modification du profil : ${error}`,
