@@ -30,6 +30,7 @@ export const getMessageById = async (req, res) => {
 
 export const createMessage = async (req, res) => {
     try {
+        const io = req.app.get('socketio'); 
         const { fromUser, toUser, text, images, files } = req.body;
         const newMessage = new Message({
             fromUser,
@@ -43,7 +44,7 @@ export const createMessage = async (req, res) => {
         res.status(201).json(savedMessage);
     } catch (err) {
         res.status(500).json({
-            message: "Une erreur est survenue lors de l'envoi du message.",
+            message: `Une erreur est survenue lors de l'envoi du message. ${err}`,
         });
     }
 };

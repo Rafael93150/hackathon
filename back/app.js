@@ -2,12 +2,13 @@ import express from "express";
 import mongoose from "mongoose";
 import auth from "./src/router/authRouter.js";
 import messages from "./src/router/messagesRouter.js";
-import calendarRouter from './src/router/calendarRouter.js';
+import calendarRouter from "./src/router/calendarRouter.js";
 import users from "./src/router/userRouter.js";
 import dotenv from "dotenv";
 import authMiddleware from "./src/middlewares/authMiddleware.js";
-import http from 'http';
-import { Server } from 'socket.io';
+import { Server } from "socket.io";
+import { connectToWebsocket } from "./src/config/websockets.js";
+import { createServer } from "http";
 
 const app = express();
 dotenv.config();
@@ -30,11 +31,14 @@ app.use((req, res, next) => {
 app.use("/auth", auth);
 app.use("/messages", authMiddleware, messages);
 app.use("/users", authMiddleware, users);
-app.use('/calendar', calendarRouter);
+app.use("/calendar", calendarRouter);
 
-const server = http.createServer(app);
+const server = app.get('server');
 const io = new Server(server);
-app.set('socketio', io);
+app.set("socketio", io);
+
+const httpServer = createServer(app)
+connectToWebsocket(httpServer)
 
 try {
     await mongoose.connect(process.env.DB_URI);
