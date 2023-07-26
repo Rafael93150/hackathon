@@ -1,10 +1,9 @@
 <script setup>
-import { mdiLogout, mdiClose } from "@mdi/js";
+import { mdiLogout } from "@mdi/js";
 import { computed } from "vue";
 import { useStyleStore } from "@/stores/style.js";
 import AsideMenuList from "@/components/AsideMenuList.vue";
 import AsideMenuItem from "@/components/AsideMenuItem.vue";
-import BaseIcon from "@/components/BaseIcon.vue";
 
 defineProps({
   menu: {
