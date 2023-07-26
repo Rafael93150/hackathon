@@ -2,6 +2,19 @@ import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import Company from "../models/company.js";
 
+export const getUser = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const user = await User.findById(userId);
+        if (!user) throw new Error("L'utilisateur n'existe pas");
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({
+            error: `Une erreur est survenue lors de la récupération du profil : ${error}`,
+        });
+    }
+};
+
 export const getUsers = async (req, res) => {
     // { filters : { skills: ["React", "Node"], companies: ["CompanyName1", "CompanyName2"] } }
     try {
