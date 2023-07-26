@@ -1,44 +1,25 @@
-import { defineStore } from "pinia";
-import axios from "axios";
-
+import {defineStore} from "pinia";
 export const useMainStore = defineStore("main", {
   state: () => ({
-    /* User */
+    id: null,
     userName: null,
     userEmail: null,
-    userAvatar: null,
-
-    /* Field focus with ctrl+k (to register only once) */
-    isFieldFocusRegistered: false,
-
-    /* Sample data (commonly used) */
-    clients: [],
-    history: [],
+    userRole: null,
   }),
   actions: {
     setUser(payload) {
-      if (payload.name) {
-        this.userName = payload.name;
+      if (payload._id) {
+        this.id = payload._id;
       }
       if (payload.email) {
         this.userEmail = payload.email;
       }
-      if (payload.avatar) {
-        this.userAvatar = payload.avatar;
+      if (payload.firstname && payload.lastname) {
+        this.userName = payload.firstname + " " + payload.lastname;
       }
-    },
-
-    fetch(sampleDataKey) {
-      axios
-        .get(`data-sources/${sampleDataKey}.json`)
-        .then((r) => {
-          if (r.data && r.data.data) {
-            this[sampleDataKey] = r.data.data;
-          }
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
+      if (payload.role) {
+        this.userRole = payload.role;
+      }
     },
   },
 });

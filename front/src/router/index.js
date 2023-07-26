@@ -15,6 +15,14 @@ const routes = [
   },
   {
     meta: {
+      title: "Users",
+    },
+    path: "/users",
+    name: "users",
+    component: () => import("@/views/UsersView.vue"),
+  },
+  {
+    meta: {
       title: "Tables",
     },
     path: "/tables",

@@ -15,13 +15,7 @@ const pinia = createPinia();
 /* Create Vue app */
 createApp(App).use(router).use(pinia).mount("#app");
 
-/* Init Pinia stores */
-const mainStore = useMainStore(pinia);
 const styleStore = useStyleStore(pinia);
-
-/* Fetch sample data */
-mainStore.fetch("clients");
-mainStore.fetch("history");
 
 /* App style */
 styleStore.setStyle( "basic");
