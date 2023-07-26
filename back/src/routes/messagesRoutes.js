@@ -1,5 +1,4 @@
 import Message from "../models/message.js";
-import User from "../models/user.js";
 import { addPoints } from "../services/pointsService.js";
 
 export const getAllMessages = async (req, res) => {
@@ -40,6 +39,7 @@ export const createMessage = async (req, res) => {
             files,
         });
         const savedMessage = await newMessage.save();
+        io.emit("newMessage", savedMessage);
         res.status(201).json(savedMessage);
     } catch (err) {
         res.status(500).json({
