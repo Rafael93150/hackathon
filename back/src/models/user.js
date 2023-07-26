@@ -10,10 +10,22 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        phone: {
+            type: String,
+            required: false,
+        },
         email: {
             type: String,
             required: true,
             unique: true,
+        },
+        address: {
+            type: String,
+            required: false,
+        },
+        picture: {
+            type: String,
+            required: false,
         },
         password: {
             type: String,
@@ -32,10 +44,16 @@ const userSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
-        competences: {
+        skills: {
             type: [String],
             default: [],
         },
+        companies: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Company",
+            },
+        ],
     },
     {
         timestamps: true,
