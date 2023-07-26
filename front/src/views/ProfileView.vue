@@ -18,6 +18,7 @@ import UserCard from "@/components/UserCard.vue";
 import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
 import SectionTitleLineWithButton from "@/components/SectionTitleLineWithButton.vue";
 import axiosInstance from "@/utils/axiosInstance";
+import { useMainStore } from "@/stores/main";
 
 const state = reactive({
   profile : {
@@ -36,7 +37,11 @@ const state = reactive({
 const connectedUser = JSON.parse(localStorage.getItem("user"));
 
 axiosInstance.get("/users/" + connectedUser._id ).then((response) => {
-    state.profile = response.data
+  state.profile = {
+    firstname: response.data.firstname, 
+    lastname: response.data.lastname, 
+    email: response.data.email
+  };
 });
 
 const submitProfile = () => {
@@ -45,6 +50,10 @@ const submitProfile = () => {
       state.response = response
       if (response.data.user)
         localStorage.setItem("user", JSON.stringify(response.data.user));
+        useMainStore().setUser({
+          firstname: response.data.user.firstname,
+          lastname: response.data.user.lastname
+      });
     });
   }
   catch (error) {

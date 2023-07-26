@@ -7,7 +7,8 @@ import CardBox from "@/components/CardBox.vue";
 import PillTag from "@/components/PillTag.vue";
 
 
-const userName = computed(() => JSON.parse(localStorage.getItem("user")).firstname + JSON.parse(localStorage.getItem("user")).lastname);
+const user = computed(
+  () =>  JSON.parse(localStorage.getItem("user")));
 
 const userSwitchVal = ref(false);
 </script>
@@ -27,11 +28,11 @@ const userSwitchVal = ref(false);
           /> -->
         </div>
         <h1 class="text-2xl">
-           <b>{{ userName }}</b>
+           <b>{{ user.firstname }} {{ user.lastname }}</b>
         </h1>
-        <p>Actuellement chez #Entreprise</p>
+        <p>{{ user.companies && user.companies.length ? "Actuellement chez" + user.companies : "Affecté chez aucun client" }}</p>
         <div class="flex justify-center md:block">
-          <PillTag label="Niveau #niveau" color="info" :icon="mdiCheckDecagram" />
+          <PillTag :label="`Niveau ${user.level}`" color="info" :icon="mdiCheckDecagram" />
         </div>
       </div>
     </BaseLevel>
