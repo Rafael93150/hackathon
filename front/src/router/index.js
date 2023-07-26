@@ -1,6 +1,8 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import Home from "@/views/HomeView.vue";
 import { isAuthenticated } from "@/utils/auth";
+import { usersRoutes } from "./users";
+import { companiesRoutes } from "@/router/companies";
 
 const routes = [
   {
@@ -13,13 +15,15 @@ const routes = [
     name: "dashboard",
     component: Home,
   },
+  ...usersRoutes,
+  ...companiesRoutes,
   {
     meta: {
-      title: "Users",
+      title: "Formation",
     },
-    path: "/users",
-    name: "users",
-    component: () => import("@/views/UsersView.vue"),
+    path: "/training",
+    name: "training",
+    component: () => import("@/views/training/TrainingView.vue"),
   },
   {
     meta: {

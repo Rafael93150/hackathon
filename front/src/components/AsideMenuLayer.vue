@@ -20,16 +20,12 @@ const styleStore = useStyleStore();
 const logoutItem = computed(() => ({
   label: "Déconnexion",
   icon: mdiLogout,
-  color: "bg-[#5B98D2]",
+  color: "bg-[#00BB7E] text-white pl-4",
   isLogout: true,
 }));
 
 const menuClick = (event, item) => {
   emit("menu-click", event, item);
-};
-
-const asideLgCloseClick = (event) => {
-  emit("aside-lg-close-click", event);
 };
 </script>
 
@@ -41,11 +37,9 @@ const asideLgCloseClick = (event) => {
     <div
       class="lg:rounded-2xl flex-1 flex flex-col overflow-hidden bg-[#282B2A]"
     >
-      <div
-        class="flex flex-row  h-14 items-center justify-between bg-[#282B2A]"
-      >
+      <div class="flex flex-row h-14 items-center justify-between bg-[#00BB7E]">
         <div
-          class="flex justify-center items-center flex-1  lg:pl-6 xl:text-center xl:pl-0"
+          class="flex justify-center items-center flex-1 lg:pl-6 xl:text-center xl:pl-0 pb-6"
         >
           <img
             class="w-auto mt-12 flex items-center justify-center lg:justify-start xl:justify-center"
@@ -53,7 +47,6 @@ const asideLgCloseClick = (event) => {
             alt="carbon"
           />
         </div>
-
       </div>
       <div
         :class="

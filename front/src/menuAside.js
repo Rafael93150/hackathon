@@ -23,6 +23,11 @@ export default [
     icon: mdiResponsive,
   },
   {
+    to: "/companies",
+    label: "Entreprise",
+    icon: mdiAccountCircle,
+  },
+  {
     to: "/profile",
     label: "Profile",
     icon: mdiAccountCircle,
@@ -33,7 +38,7 @@ export default [
     icon: mdiTable,
   },
   {
-    to: "/forms",
+    to: "/training",
     label: "Formation",
     icon: mdiSquareEditOutline,
   },
