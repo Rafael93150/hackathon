@@ -17,10 +17,8 @@ useMainStore().setUser({
   name: "John Doe",
   email: "john@example.com",
   avatar:
-    "https://avatars.dicebear.com/api/avataaars/example.svg?options[top][]=shortHair&options[accessoriesChance]=93",
+    "https://avatars.dicebear.com/api/avataaars/example.svg?options[top][]=shortHair&options[accessoriesChance]=93"
 });
-
-const isAuthenticated = ref(localStorage.getItem('token') !== null);
 
 const layoutAsidePadding = "xl:pl-60";
 
@@ -42,7 +40,8 @@ const menuClick = (event, item) => {
   }
 
   if (item.isLogout) {
-    //
+    localStorage.removeItem("token");
+    location.reload();
   }
 };
 </script>
@@ -90,7 +89,7 @@ const menuClick = (event, item) => {
           href="https://tailwind-vue.justboil.me/"
           target="_blank"
           class="text-blue-600"
-          >Premium version</a
+        >Premium version</a
         >
       </FooterBar>
     </div>

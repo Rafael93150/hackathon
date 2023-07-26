@@ -20,23 +20,13 @@ export default [
     label: "Dashboard",
   },
   {
-    to: "/tables",
-    label: "Tables",
-    icon: mdiTable,
+    to: "/users",
+    label: "Utilisateur",
+    icon: mdiAccountCircle,
   },
   {
-    to: "/forms",
-    label: "Forms",
-    icon: mdiSquareEditOutline,
-  },
-  {
-    to: "/ui",
-    label: "UI",
-    icon: mdiTelevisionGuide,
-  },
-  {
-    to: "/responsive",
-    label: "Responsive",
+    to: "/planning",
+    label: "Planning",
     icon: mdiResponsive,
   },
   {
@@ -45,13 +35,13 @@ export default [
     icon: mdiAccountCircle,
   },
   {
-    to: "/login",
-    label: "Login",
-    icon: mdiLock,
+    to: "/tables",
+    label: "Community",
+    icon: mdiTable,
   },
   {
-    to: "/error",
-    label: "Error",
-    icon: mdiAlertCircle,
+    to: "/forms",
+    label: "Formation",
+    icon: mdiSquareEditOutline,
   },
 ];

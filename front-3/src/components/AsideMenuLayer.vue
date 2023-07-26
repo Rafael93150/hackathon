@@ -18,9 +18,9 @@ const emit = defineEmits(["menu-click", "aside-lg-close-click"]);
 const styleStore = useStyleStore();
 
 const logoutItem = computed(() => ({
-  label: "Logout",
+  label: "Déconnexion",
   icon: mdiLogout,
-  color: "info",
+  color: "bg-[#5B98D2]",
   isLogout: true,
 }));
 
@@ -39,32 +39,29 @@ const asideLgCloseClick = (event) => {
     class="lg:py-2 lg:pl-2 w-60 fixed flex z-40 top-0 h-screen transition-position overflow-hidden"
   >
     <div
-      :class="styleStore.asideStyle"
-      class="lg:rounded-2xl flex-1 flex flex-col overflow-hidden dark:bg-slate-900"
+      class="lg:rounded-2xl flex-1 flex flex-col overflow-hidden bg-[#282B2A]"
     >
       <div
-        :class="styleStore.asideBrandStyle"
-        class="flex flex-row h-14 items-center justify-between dark:bg-slate-900"
+        class="flex flex-row  h-14 items-center justify-between bg-[#282B2A]"
       >
         <div
-          class="text-center flex-1 lg:text-left lg:pl-6 xl:text-center xl:pl-0"
+          class="flex justify-center items-center flex-1  lg:pl-6 xl:text-center xl:pl-0"
         >
-          <b class="font-black">One</b>
+          <img
+            class="w-auto mt-12 flex items-center justify-center lg:justify-start xl:justify-center"
+            src="/logo.png"
+            alt="carbon"
+          />
         </div>
-        <button
-          class="hidden lg:inline-block xl:hidden p-3"
-          @click.prevent="asideLgCloseClick"
-        >
-          <BaseIcon :path="mdiClose" />
-        </button>
+
       </div>
       <div
         :class="
           styleStore.darkMode
-            ? 'aside-scrollbars-[slate]'
+            ? 'aside-scrollbars-[slate] '
             : styleStore.asideScrollbarsStyle
         "
-        class="flex-1 overflow-y-auto overflow-x-hidden"
+        class="flex-1 overflow-y-auto overflow-x-hidden mt-6"
       >
         <AsideMenuList :menu="menu" @menu-click="menuClick" />
       </div>

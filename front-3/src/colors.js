@@ -62,7 +62,7 @@ export const getButtonColor = (
     },
     bg: {
       white: "bg-[#FDFDFD] text-black",
-      whiteDark: "bg-[#FDFDFD] text-black dark:bg-slate-900 dark:text-[#FDFDFD]",
+      whiteDark: "bg-[#FDFDFD] text-black dark:bg-[#282B2A] dark:text-[#FDFDFD]",
       lightDark: "bg-gray-100 text-black dark:bg-slate-800 dark:text-[#FDFDFD]",
       contrast: "bg-gray-800 text-[#FDFDFD] dark:bg-[#FDFDFD] dark:text-black",
       success: "bg-emerald-600 dark:bg-[#00BB7E] text-[#FDFDFD]",
