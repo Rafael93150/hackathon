@@ -19,22 +19,43 @@ import BaseButtons from "@/components/BaseButtons.vue";
 import UserCard from "@/components/UserCard.vue";
 import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
 import SectionTitleLineWithButton from "@/components/SectionTitleLineWithButton.vue";
+import axiosInstance from "@/utils/axiosInstance";
+import axios from "axios";
 
 const mainStore = useMainStore();
 
-const profileForm = reactive({
-  name: mainStore.userName,
-  email: mainStore.userEmail,
+const state = reactive({
+  profile : {
+    firstname: "",
+    lastname: "",
+    email: "",
+  },
+  passwordForm : {
+    password_current: "",
+    password: "",
+    password_confirmation: "",
+  },
+  response: "",
 });
 
-const passwordForm = reactive({
-  password_current: "",
-  password: "",
-  password_confirmation: "",
+// const connectedUser = computed(() => mainStore.user);
+
+axiosInstance.get("/users/" + '64bec9d34cbb87721464b1f6').then((response) => {
+    state.profile = response.data
 });
+
 
 const submitProfile = () => {
-  mainStore.setUser(profileForm);
+  try {
+    axiosInstance.put("/users/" + '64bec9d34cbb87721464b1f6', state.profile).then((response) => {
+      console.log(response);
+      state.response = response
+      mainStore.setUser(response.data);
+    });
+  }
+  catch (error) {
+    state.response = response
+  }
 };
 
 const submitPass = () => {
@@ -45,20 +66,32 @@ const submitPass = () => {
 <template>
   <LayoutAuthenticated>
     <SectionMain>
-      <SectionTitleLineWithButton :icon="mdiAccount" title="Profile" main>
+      <SectionTitleLineWithButton :icon="mdiAccount" title="Profil" main>
       </SectionTitleLineWithButton>
 
       <UserCard class="mb-6 shadow" />
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <CardBox is-form @submit.prevent="submitProfile" class="shadow">
+          <span v-if="state.response" :class="`${state.response.status !== 200 ? 'text-red-600' : 'text-black'} text-lg text-center`">
+            {{ state.response.data }}
+          </span> 
           <FormField label="Avatar" help="500kb max.">
             <FormFilePicker label="Charger" />
           </FormField>
 
+          <FormField label="Prénom" help="Votre nom">
+            <FormControl
+              v-model="state.profile.firstname"
+              :icon="mdiAccount"
+              name="username"
+              required
+              autocomplete="username"
+            />
+          </FormField>
           <FormField label="Nom" help="Votre nom">
             <FormControl
-              v-model="profileForm.name"
+              v-model="state.profile.lastname"
               :icon="mdiAccount"
               name="username"
               required
@@ -67,7 +100,7 @@ const submitPass = () => {
           </FormField>
           <FormField label="E-mail" help="Votre e-mail">
             <FormControl
-              v-model="profileForm.email"
+              v-model="state.profile.email"
               :icon="mdiMail"
               type="email"
               name="email"
@@ -89,7 +122,7 @@ const submitPass = () => {
             help="Votre mot de passe actuel"
           >
             <FormControl
-              v-model="passwordForm.password_current"
+              v-model="state.passwordForm.password_current"
               :icon="mdiAsterisk"
               name="password_current"
               type="password"
@@ -102,7 +135,7 @@ const submitPass = () => {
 
           <FormField label="Nouveau mot de passe" help="Votre nouveau mot de passe">
             <FormControl
-              v-model="passwordForm.password"
+              v-model="state.passwordForm.password"
               :icon="mdiFormTextboxPassword"
               name="password"
               type="password"
@@ -116,7 +149,7 @@ const submitPass = () => {
             help="Confirmation du nouveau mot de passe"
           >
             <FormControl
-              v-model="passwordForm.password_confirmation"
+              v-model="state.passwordForm.password_confirmation"
               :icon="mdiFormTextboxPassword"
               name="password_confirmation"
               type="password"

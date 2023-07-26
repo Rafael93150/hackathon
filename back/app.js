@@ -7,12 +7,15 @@ import trainingRouter from './src/router/trainingRouter.js';
 import companiesRouter from './src/router/companyRouter.js';
 import users from "./src/router/userRouter.js";
 import dotenv from "dotenv";
+import cors from "cors";
 import authMiddleware from "./src/middlewares/authMiddleware.js";
 import http from 'http';
 import { Server } from 'socket.io';
 
 const app = express();
 dotenv.config();
+app.use(cors());
+
 
 app.use(express.json());
 

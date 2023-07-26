@@ -12,6 +12,7 @@ import LayoutGuest from "@/layouts/LayoutGuest.vue";
 import axios from "axios";
 import {color} from "chart.js/helpers";
 import axiosInstance from "@/utils/axiosInstance";
+import { useMainStore } from "@/stores/main";
 
 const form = reactive({
   email: "",
@@ -26,6 +27,7 @@ const router = useRouter();
 const submit = () => {
   axiosInstance.post("/auth/login", form).then((response) => {
     localStorage.setItem("token", response.data.token);
+    useMainStore.setUser(response.data.user)
     router.push("/");
   });
 };
