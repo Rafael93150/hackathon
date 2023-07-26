@@ -46,26 +46,17 @@ const submitPass = () => {
   <LayoutAuthenticated>
     <SectionMain>
       <SectionTitleLineWithButton :icon="mdiAccount" title="Profile" main>
-        <BaseButton
-          href="https://github.com/justboil/admin-one-vue-tailwind"
-          target="_blank"
-          :icon="mdiGithub"
-          label="Star on GitHub"
-          color="contrast"
-          rounded-full
-          small
-        />
       </SectionTitleLineWithButton>
 
-      <UserCard class="mb-6" />
+      <UserCard class="mb-6 shadow" />
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <CardBox is-form @submit.prevent="submitProfile">
-          <FormField label="Avatar" help="Max 500kb">
-            <FormFilePicker label="Upload" />
+        <CardBox is-form @submit.prevent="submitProfile" class="shadow">
+          <FormField label="Avatar" help="500kb max.">
+            <FormFilePicker label="Charger" />
           </FormField>
 
-          <FormField label="Name" help="Required. Your name">
+          <FormField label="Nom" help="Votre nom">
             <FormControl
               v-model="profileForm.name"
               :icon="mdiAccount"
@@ -74,7 +65,7 @@ const submitPass = () => {
               autocomplete="username"
             />
           </FormField>
-          <FormField label="E-mail" help="Required. Your e-mail">
+          <FormField label="E-mail" help="Votre e-mail">
             <FormControl
               v-model="profileForm.email"
               :icon="mdiMail"
@@ -87,16 +78,15 @@ const submitPass = () => {
 
           <template #footer>
             <BaseButtons>
-              <BaseButton color="info" type="submit" label="Submit" />
-              <BaseButton color="info" label="Options" outline />
+              <BaseButton color="info" type="submit" label="Modifier" />
             </BaseButtons>
           </template>
         </CardBox>
 
-        <CardBox is-form @submit.prevent="submitPass">
+        <CardBox is-form @submit.prevent="submitPass" class="shadow">
           <FormField
-            label="Current password"
-            help="Required. Your current password"
+            label="Mot de passe actuel"
+            help="Votre mot de passe actuel"
           >
             <FormControl
               v-model="passwordForm.password_current"
@@ -110,7 +100,7 @@ const submitPass = () => {
 
           <BaseDivider />
 
-          <FormField label="New password" help="Required. New password">
+          <FormField label="Nouveau mot de passe" help="Votre nouveau mot de passe">
             <FormControl
               v-model="passwordForm.password"
               :icon="mdiFormTextboxPassword"
@@ -122,8 +112,8 @@ const submitPass = () => {
           </FormField>
 
           <FormField
-            label="Confirm password"
-            help="Required. New password one more time"
+            label="Confirmer le nouveau mot de passe"
+            help="Confirmation du nouveau mot de passe"
           >
             <FormControl
               v-model="passwordForm.password_confirmation"
@@ -137,8 +127,7 @@ const submitPass = () => {
 
           <template #footer>
             <BaseButtons>
-              <BaseButton type="submit" color="info" label="Submit" />
-              <BaseButton color="info" label="Options" outline />
+              <BaseButton type="submit" color="info" label="Modifier" />
             </BaseButtons>
           </template>
         </CardBox>
