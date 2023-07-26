@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import auth from "./src/router/authRouter.js";
 import messages from "./src/router/messagesRouter.js";
 import calendarRouter from './src/router/calendarRouter.js';
+import trainingRouter from './src/router/trainingRouter.js';
 import users from "./src/router/userRouter.js";
 import dotenv from "dotenv";
 import authMiddleware from "./src/middlewares/authMiddleware.js";
@@ -31,6 +32,8 @@ app.use("/users", authMiddleware, users);
 
 // Utilisez le routeur pour les routes liées à l'API Google Calendar
 app.use('/calendar', calendarRouter);
+
+app.use('/', trainingRouter);
 
 
 try {

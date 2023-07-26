@@ -5,5 +5,9 @@ const PORT = process.env.PORT || 3000
 app.set('port', PORT);
 const server = http.createServer(app);
 
+
 console.log(`listening on port ${PORT}`)
 server.listen(PORT);
+app.get("/", (req, res) =>{
+    res.send("Hello sur skillconnect carbon");
+})
