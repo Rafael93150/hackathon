@@ -76,13 +76,56 @@ export const deleteEvent = async (req, res) => {
       eventId: req.params.eventId
     });
 
-    if (response.data === "") {
-      res.json("your event has been deleted successfully");
-    } else {
-      res.json("your event has not been deleted");
+        if (response.data === '') {
+            res.json('Your event has been deleted successfully');
+        } else {
+            res.json('Your event has not been deleted');
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Error was occured when deleting the event' });
     }
-  } catch (error) {
-    res.status(500).json({ error: "Erreur lors de la suppression de l'événement" });
-  }
 };
+
+// Update an event from eventID
+
+export const updateEvent = async (req, res) => {
+    try {
+      const eventId = req.params.eventId;
+      const updatedEventData = req.body;
+  
+      // Obtenir les détails de l'événement existant
+      const eventDetails = await calendar.events.get({
+        auth: auth,
+        calendarId: calendarId,
+        eventId: eventId,
+      });
+  
+      // Fusionner les détails de l'événement existant avec les données mises à jour
+      const mergedEventData = {
+        ...eventDetails.data,
+        ...updatedEventData,
+      };
+  
+      const response = await calendar.events.update({
+        auth: auth,
+        calendarId: calendarId,
+        eventId: eventId,
+        resource: mergedEventData,
+      });
+  
+      if (response.data) {
+        res.json(
+            {
+              message: "Your event has been updated successfully",
+              event : response.data
+            })
+      } else {
+        res.json("Unable to update the event");
+      }
+    } catch (error) {
+      console.log(`Erreur lors de la mise à jour de l'événement --> ${error}`);
+      res.status(500).json({ error: "Error was occured when updating the event" });
+    }
+  };
+  
 

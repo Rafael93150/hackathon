@@ -1,9 +1,8 @@
-import axios from "axios";
 import {google} from "googleapis";
 
 
 const key = "AIzaSyDp9HkUHwBb45YoN1GBH7Sy7nLz_lMcEhk";
-const apiUrl = "https://www.googleapis.com/youtube/v3";
+
 const youtube = google.youtube({
   version: "v3",
   auth: key 
