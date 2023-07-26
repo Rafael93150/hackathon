@@ -4,6 +4,7 @@ import auth from "./src/router/authRouter.js";
 import messages from "./src/router/messagesRouter.js";
 import calendarRouter from './src/router/calendarRouter.js';
 import trainingRouter from './src/router/trainingRouter.js';
+import companiesRouter from './src/router/companyRouter.js';
 import users from "./src/router/userRouter.js";
 import dotenv from "dotenv";
 import authMiddleware from "./src/middlewares/authMiddleware.js";
@@ -31,9 +32,9 @@ app.use((req, res, next) => {
 app.use("/auth", auth);
 app.use("/messages", authMiddleware, messages);
 app.use("/users", authMiddleware, users);
-app.use('/calendar', calendarRouter);
-
-app.use('/', trainingRouter);
+app.use('/calendar', authMiddleware, calendarRouter);
+app.use('/training', authMiddleware, trainingRouter);
+app.use('/companies', authMiddleware, companiesRouter);
 
 const server = http.createServer(app);
 const io = new Server(server);
