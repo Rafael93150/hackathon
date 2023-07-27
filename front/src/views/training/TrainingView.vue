@@ -2,25 +2,23 @@
 import SectionMain from "@/components/SectionMain.vue";
 import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
 import SectionTitleLineWithButton from "@/components/SectionTitleLineWithButton.vue";
-import { mdiCertificate, mdiPlus } from "@mdi/js";
+import { mdiCertificate } from "@mdi/js";
+import YouTube from "vue3-youtube";
 import {
   Dialog,
   DialogPanel,
-  TransitionRoot,
   TransitionChild,
+  TransitionRoot,
 } from "@headlessui/vue";
 import axiosInstance from "@/utils/axiosInstance";
-import { reactive, ref, watch } from "vue";
-import BaseButton from "@/components/BaseButton.vue";
+import { reactive } from "vue";
+import { MagnifyingGlassIcon } from "@heroicons/vue/20/solid";
 
-const modalOpen = ref(false);
-const videoRef = ref(null);
-watch(videoRef, () => {
-  videoRef.value?.play();
-});
 const state = reactive({
   trainings: [],
   selectedVideo: null,
+  openModal: false,
+  search: "",
 });
 const init = async () => {
   await fetchTraining();
@@ -28,7 +26,11 @@ const init = async () => {
 
 const selectVideo = (video) => {
   state.selectedVideo = video;
-  modalOpen.value = true;
+  state.openModal = true;
+};
+
+const closeModal = () => {
+  state.openModal = false;
 };
 
 const fetchTraining = async () => {
@@ -36,108 +38,144 @@ const fetchTraining = async () => {
     state.trainings = await axiosInstance
       .get("/training/search")
       .then((response) => {
-        console.log(response.data);
         return response.data;
       });
   } catch (error) {
-    console.error("Error fetching companies:", error);
+    console.error("Error fetching trainings:", error);
   }
 };
+
+const submit = async () => {
+  try {
+    state.trainings = await axiosInstance
+      .get("/training/search", {
+        params: {
+          search_query: state.search,
+        },
+      })
+      .then((response) => {
+        return response.data;
+      });
+  } catch (error) {
+    console.error("Error fetching Trainings:", error);
+  }
+};
+
 init();
 </script>
 <template>
   <LayoutAuthenticated>
     <SectionMain>
       <SectionTitleLineWithButton :icon="mdiCertificate" title="Formation" main>
-        <BaseButton
-          href="/#/training/create"
-          :icon="mdiPlus"
-          label="Ajouter une formation"
-          color="bg-[#00BB7E] text-white"
-          rounded-full
-          small
-        />
+        <form @submit.prevent="submit">
+          <div>
+            <label
+              for="search"
+              class="block text-sm font-medium leading-6 text-gray-900 sr-only"
+              >Search</label
+            >
+            <div class="mt-2 flex rounded-md shadow-sm">
+              <div
+                class="relative flex flex-grow items-stretch focus-within:z-10"
+              >
+                <div
+                  class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+                >
+                  <MagnifyingGlassIcon
+                    class="h-5 w-5 text-gray-400"
+                    aria-hidden="true"
+                  />
+                </div>
+                <input
+                  v-model="state.search"
+                  type="text"
+                  name="search"
+                  class="block w-full rounded-none rounded-l-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  placeholder="Search..."
+                />
+              </div>
+              <button
+                type="submit"
+                class="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+              >
+                Search
+              </button>
+            </div>
+          </div>
+        </form>
       </SectionTitleLineWithButton>
       <div
-        v-for="post in state.trainings"
-        :key="post.videoId"
-        class="grid grid-cols-3"
+        class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3"
       >
-        <!-- Video thumbnail -->
-        <button
-          class="relative flex justify-center items-center focus:outline-none focus-visible:ring focus-visible:ring-indigo-300 rounded-3xl group"
-          aria-label="Watch the video"
-          @click="selectVideo(post)"
+        <article
+          v-for="post in state.trainings"
+          :key="post.videoId"
+          class="flex flex-col items-start text-left"
         >
-          <img
-            class="rounded-3xl shadow-2xl transition-shadow duration-300 ease-in-out"
-            :src="
-              post?.thumbnail ??
-              'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=3603&q=80'
-            "
-            alt="Modal video thumbnail"
-          />
-          <!-- Play icon -->
-          <svg
-            class="absolute pointer-events-none group-hover:scale-110 transition-transform duration-300 ease-in-out"
-            width="72"
-            height="72"
-          >
-            <circle
-              class="fill-white"
-              cx="36"
-              cy="36"
-              r="36"
-              fill-opacity=".8"
+          <div class="relative w-full">
+            <img
+              :src="post.thumbnail"
+              alt=""
+              class="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]"
             />
-            <path
-              class="fill-indigo-500 drop-shadow-2xl"
-              d="M44 36a.999.999 0 0 0-.427-.82l-10-7A1 1 0 0 0 32 29V43a.999.999 0 0 0 1.573.82l10-7A.995.995 0 0 0 44 36V36c0 .001 0 .001 0 0Z"
+            <div
+              class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10"
             />
-          </svg>
-        </button>
+          </div>
+          <div class="max-w-xl">
+            <div class="group relative">
+              <h3
+                class="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600"
+              >
+                <button @click="selectVideo(post)">
+                  <span class="absolute inset-0 text-left" />
+                  {{ post.title }}
+                </button>
+              </h3>
+              <p class="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
+                {{ post.description }}
+              </p>
+            </div>
+          </div>
+        </article>
       </div>
-      <TransitionRoot :show="modalOpen" as="template">
-        <Dialog @close="modalOpen = false">
-          <!-- Modal backdrop -->
+      <TransitionRoot as="template" :show="state.openModal">
+        <Dialog as="div" class="relative z-10" @close="closeModal">
           <TransitionChild
-            class-name="fixed inset-0 z-[99999] bg-black bg-opacity-50 transition-opacity"
-            enter="transition ease-out duration-200"
+            as="template"
+            enter="ease-out duration-300"
             enter-from="opacity-0"
             enter-to="opacity-100"
-            leave="transition ease-out duration-100"
+            leave="ease-in duration-200"
             leave-from="opacity-100"
             leave-to="opacity-0"
-            aria-hidden="true"
-          />
-          <!-- End: Modal backdrop -->
-          <!-- Modal dialog -->
-          <TransitionChild
-            class-name="fixed inset-0 z-[99999] flex p-6"
-            enter="transition ease-out duration-300"
-            enter-from="opacity-0 scale-75"
-            enter-to="opacity-100 scale-100"
-            leave="transition ease-out duration-200"
-            leave-from="opacity-100 scale-100"
-            leave-to="opacity-0 scale-75"
           >
-            <div class="max-w-5xl mx-auto h-full flex items-center">
-              <DialogPanel
-                class="w-full max-h-full rounded-3xl shadow-2xl aspect-video bg-black overflow-hidden"
-              >
-                <video ref="videoRef" loop controls>
-                  <source
-                    :src="state.selectedVideo.videoUrl"
-                    :width="100"
-                    :height="150"
-                    type="video/mp4"
-                  />
-                  Your browser does not support the video tag.
-                </video>
-              </DialogPanel>
-            </div>
+            <div
+              class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+            />
           </TransitionChild>
-          <!-- End: Modal dialog -->
+
+          <div class="fixed inset-0 z-50 overflow-y-auto">
+            <div
+              class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
+            >
+              <TransitionChild
+                as="template"
+                enter="ease-out duration-300"
+                enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                enter-to="opacity-100 translate-y-0 sm:scale-100"
+                leave="ease-in duration-200"
+                leave-from="opacity-100 translate-y-0 sm:scale-100"
+                leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              >
+                <DialogPanel
+                  class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl"
+                >
+                  <YouTube :src="state.selectedVideo.videoUrl" />
+                </DialogPanel>
+              </TransitionChild>
+            </div>
+          </div>
         </Dialog>
       </TransitionRoot>
     </SectionMain>
