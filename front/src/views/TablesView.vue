@@ -7,12 +7,18 @@ import axiosInstance from "@/utils/axiosInstance";
 import { ref } from "vue";
 
 const state = ref({
-  messages: null,
+  messages: [],
 });
 
-axiosInstance.get("/messages/").then((response) => {
-  state.messages = response.data;
-});
+const init = async () => {
+  await fetchEvents();
+};
+
+const fetchEvents = async () => {
+  state.messages = await axiosInstance.get("/messages/").then((response) => {
+    return response.data;
+  });
+};
 
 const handleSendMessage = (message) => {
   // Ici, vous pouvez ajouter la logique pour envoyer le message au serveur
@@ -24,6 +30,9 @@ const handleSendMessage = (message) => {
   //   content: message,
   // });
 };
+
+init();
+
 </script>
 
 <template>
@@ -31,7 +40,7 @@ const handleSendMessage = (message) => {
     <SectionMain>
       <div class="chat">
         <div class="chat-messages">
-          <ChatMessages v-if="state.messages" v-for="message in state.messages" :key="message._id" :message="message" />
+          <ChatMessages v-for="message in state.messages" :key="message._id" :message="message" />
         </div>
         <!-- <ChatInput @send-message="handleSendMessage" /> -->
       </div>
