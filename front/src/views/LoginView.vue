@@ -26,6 +26,7 @@ const submit = () => {
   axiosInstance.post("/auth/login", form).then((response) => {
     localStorage.setItem("token", response.data.token);
     localStorage.setItem("user", JSON.stringify(response.data.user));
+    useMainStore().setUser(response.data.user);
     router.push("/");
   });
 };

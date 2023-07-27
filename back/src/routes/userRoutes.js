@@ -21,7 +21,8 @@ export const getUsers = async (req, res) => {
         const filters = req.body.filters;
         const userQuery = {};
         if (filters) {
-            if (filters.skills && filters.skills.length) userQuery.skills = { $in: filters.skills };
+            if (filters.skills && filters.skills.length)
+                userQuery.skills = { $in: filters.skills };
             if (filters.companies && filters.companies.length) {
                 const companyIds = await Company.find({
                     name: { $in: filters.companies },
@@ -42,7 +43,19 @@ export const getUsers = async (req, res) => {
 export const updateUser = async (req, res) => {
     try {
         const userId = req.params.userId;
-        const { firstname, lastname, email, password, phone, level, address, points, skills, companies, picture } = req.body;
+        const {
+            firstname,
+            lastname,
+            email,
+            password,
+            phone,
+            level,
+            address,
+            points,
+            skills,
+            companies,
+            picture,
+        } = req.body;
 
         const user = await User.findById(userId);
         if (!user) throw new Error("L'utilisateur n'existe pas");
@@ -60,11 +73,12 @@ export const updateUser = async (req, res) => {
         if (skills) userQuery.skills = skills;
         if (companies) userQuery.companies = companies;
 
-        const updatedUser = await User.findByIdAndUpdate(userId, userQuery);
+        await User.findByIdAndUpdate(userId, userQuery);
+        const updatedUser = await User.findById(userId);
 
         res.json({
             message: "Le profil a bien été modifié",
-            user : updatedUser
+            user: updatedUser,
         });
     } catch (error) {
         res.status(500).json({

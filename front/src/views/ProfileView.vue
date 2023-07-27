@@ -19,6 +19,7 @@ import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
 import SectionTitleLineWithButton from "@/components/SectionTitleLineWithButton.vue";
 import axiosInstance from "@/utils/axiosInstance";
 import { useMainStore } from "@/stores/main";
+import { showToast } from "@/utils/toast";
 
 const state = reactive({
   profile : {
@@ -40,31 +41,47 @@ axiosInstance.get("/users/" + connectedUser._id ).then((response) => {
   state.profile = {
     firstname: response.data.firstname, 
     lastname: response.data.lastname, 
-    email: response.data.email
+    email: response.data.email,
+    picture: response.data.picture
   };
 });
 
 const submitProfile = () => {
   try {
     axiosInstance.put("/users/" +  connectedUser._id  , state.profile).then((response) => {
-      state.response = response
-      if (response.data.user)
+      if (response.data.user){
         localStorage.setItem("user", JSON.stringify(response.data.user));
-        useMainStore().setUser({
-          firstname: response.data.user.firstname,
-          lastname: response.data.user.lastname
-      });
+        useMainStore().setUser(state.profile);
+      }
+      state.response = response;
+      showToast(state.response.data.message);
     });
   }
   catch (error) {
     state.response = response
+    howToast(state.response.data.message);
   }
+  
 };
 
 const submitPass = () => {
   //
 };
 </script>
+
+<!-- <script>
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
+export default {
+  methods: {
+    showToast(){
+      toast('Profil modifié', {
+        autoClose: 2000,
+      });
+    }
+  },
+}
+</script> -->
 
 <template>
   <LayoutAuthenticated>
@@ -76,9 +93,9 @@ const submitPass = () => {
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <CardBox is-form @submit.prevent="submitProfile" class="shadow">
-          <span v-if="state.response" :class="`${state.response.status !== 200 ? 'text-red-600' : 'text-black'} text-lg text-center`">
+          <!-- <span v-if="state.response" :class="`${state.response.status !== 200 ? 'text-red-600' : 'text-blue-500'} text-lg text-center`">
             {{ state.response.data.message }}
-          </span> 
+          </span>  -->
           <FormField label="Avatar" help="500kb max.">
             <FormFilePicker label="Charger" />
           </FormField>
