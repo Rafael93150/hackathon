@@ -37,13 +37,13 @@
     {
       to: "/tables",
       label: "Tables",
-      icon: "/public/icons/Blancs/community.png",
+      icon: "/icons/Blancs/community.png",
       isPublicIcon: true
     },
     {
       to: "/training",
       label: "Formation",
-      icon: "/public/icons/Blancs/training.png",
+      icon: "/icons/Blancs/training.png",
       isPublicIcon: true
     },
   ];
