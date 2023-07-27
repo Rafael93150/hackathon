@@ -2,6 +2,11 @@
 import { computed } from "vue";
 
 const props = defineProps({
+  isPublicIcon: {
+      type: Boolean,
+      required: false, 
+      default: false
+  },
   path: {
     type: String,
     required: true,
@@ -28,7 +33,11 @@ const iconSize = computed(() => props.size ?? 16);
 </script>
 
 <template>
-  <span :class="spanClass">
+  <span v-if="props.isPublicIcon" :class="spanClass">
+    <img :src="props.path" alt="icon" class="w-5">
+    <slot />
+  </span>
+  <span v-else :class="spanClass">
     <svg
       viewBox="0 0 24 24"
       :width="iconSize"

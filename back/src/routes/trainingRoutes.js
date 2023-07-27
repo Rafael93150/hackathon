@@ -8,6 +8,7 @@ const youtube = google.youtube({
   auth: key 
 })
 
+
 export const searchVideoGoogleApi = async (req, res, next) => {
   try {
     const searchQuery = req.query.search_query;
@@ -34,3 +35,7 @@ export const searchVideoGoogleApi = async (req, res, next) => {
     next(error);
   }
 };
+
+
+
+
