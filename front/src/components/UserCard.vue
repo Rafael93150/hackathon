@@ -28,7 +28,7 @@ const userSwitchVal = ref(false);
         <h1 class="text-2xl">
            <b>{{ user.firstname }} {{ user.lastname }}</b>
         </h1>
-        <p>{{ user.companies && user.companies.length ? "Actuellement chez" + user.companies : "Affecté chez aucun client" }}</p>
+        <p>{{ user.companies && user.companies.length ? "Actuellement chez " + user.companies : "Affecté chez aucun client" }}</p>
         <div class="flex justify-center md:block">
           <PillTag :label="`Niveau ${user.level}`" color="info" :icon="mdiCheckDecagram" />
         </div>

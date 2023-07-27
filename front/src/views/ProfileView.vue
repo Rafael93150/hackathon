@@ -26,6 +26,7 @@ const state = reactive({
     firstname: "",
     lastname: "",
     email: "",
+    picture: "",
   },
   passwordForm : {
     password_current: "",
@@ -38,12 +39,25 @@ const state = reactive({
 const connectedUser = JSON.parse(localStorage.getItem("user"));
 
 axiosInstance.get("/users/" + connectedUser._id ).then((response) => {
+  localStorage.setItem("user", JSON.stringify(response.data));
   state.profile = {
     firstname: response.data.firstname, 
     lastname: response.data.lastname, 
     email: response.data.email,
     picture: response.data.picture
   };
+});
+
+// change localStorage user.companies ids to names
+axiosInstance.get("/users/" + connectedUser._id + "/companies").then((response) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const companyNames = response.data.reduce((acc, company) => {
+    acc[company._id] = company.name;
+    return acc;
+  }, {});
+
+  user.companies = user.companies.map((companyId) => companyNames[companyId]);
+  localStorage.setItem("user", JSON.stringify(user));
 });
 
 const submitProfile = () => {
@@ -59,9 +73,8 @@ const submitProfile = () => {
   }
   catch (error) {
     state.response = response
-    howToast(state.response.data.message);
+    showToast(state.response.data.message);
   }
-  
 };
 
 const submitPass = () => {
@@ -69,26 +82,11 @@ const submitPass = () => {
 };
 </script>
 
-<!-- <script>
-import { toast } from "vue3-toastify";
-import "vue3-toastify/dist/index.css";
-export default {
-  methods: {
-    showToast(){
-      toast('Profil modifié', {
-        autoClose: 2000,
-      });
-    }
-  },
-}
-</script> -->
-
 <template>
   <LayoutAuthenticated>
     <SectionMain>
       <SectionTitleLineWithButton :icon="mdiAccount" title="Profil" main>
       </SectionTitleLineWithButton>
-
       <UserCard class="mb-6 shadow" />
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">

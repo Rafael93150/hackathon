@@ -13,6 +13,7 @@
     "@fullcalendar/interaction": "^6.1.8",
     "@fullcalendar/timegrid": "^6.1.8",
     "@fullcalendar/vue3": "^6.1.8",
+    "@growthbunker/vuetimeline": "^0.1.17",
     "@headlessui/vue": "^1.7.14",
     "@heroicons/vue": "^2.0.18",
     "@mdi/js": "^7.0.96",
