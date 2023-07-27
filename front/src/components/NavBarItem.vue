@@ -1,7 +1,7 @@
 <script setup>
 import { mdiChevronUp, mdiChevronDown } from "@mdi/js";
 import { RouterLink } from "vue-router";
-import { computed, ref, onMounted, onBeforeUnmount } from "vue";
+import { computed, ref, onMounted, onBeforeUnmount, watchEffect } from "vue";
 import { useStyleStore } from "@/stores/style.js";
 import { useMainStore } from "@/stores/main.js";
 import BaseIcon from "@/components/BaseIcon.vue";
@@ -47,9 +47,15 @@ const componentClass = computed(() => {
   return base;
 });
 
-const itemLabel = computed(() =>
-  props.item.isCurrentUser ? JSON.parse(localStorage.getItem("user")).firstname + JSON.parse(localStorage.getItem("user")).lastname : props.item.label
+let itemLabel = ref(() =>
+  props.item.isCurrentUser ? JSON.parse(localStorage.getItem("user")).firstname + " " + JSON.parse(localStorage.getItem("user")).lastname : props.item.label
 );
+
+const mainStore = useMainStore();
+
+watchEffect(() => {
+  itemLabel.value = props.item.isCurrentUser ? mainStore.currentUser.firstname + " " + mainStore.currentUser.lastname : props.item.label;
+});
 
 const isDropdownActive = ref(false);
 
