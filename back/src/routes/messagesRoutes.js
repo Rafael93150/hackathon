@@ -121,12 +121,22 @@ export const deleteMessage = async (req, res) => {
 
 export const addPointsToMessageSender = async (req, res) => {
     try {
-        const pointsToAdd = 50;
+        const pointsToAdd = req.body.pointsToAdd;
+        if (!pointsToAdd) {
+            return res.status(400).json({
+                message: "Vous devez spécifier le nombre de points à ajouter.",
+            });
+        }
         const message = await Message.findById(req.params.messageId);
         if (!message) {
             return res.status(404).json({ message: "Message non trouvé." });
         }
-        addPoints(message.fromUser, pointsToAdd);
+        try{
+            addPoints(message.fromUser, pointsToAdd);
+        }catch(err){
+            throw new Error(err);
+        }
+        
         res.json({ message: `L'employé a reçu ${pointsToAdd} points` });
     } catch (err) {
         res.status(500).json({

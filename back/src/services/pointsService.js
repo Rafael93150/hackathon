@@ -12,5 +12,7 @@ export const addPoints = async (userId, pointsToAdd) => {
     } else {
         userQuery = { $inc: { points: pointsToAdd } };
     }
+
+    await User.findByIdAndUpdate(userId, userQuery, { new: true });
     return true;
 };

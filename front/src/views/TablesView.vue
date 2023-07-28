@@ -54,6 +54,16 @@ const saveEditedMessage = async (messageId, messageText) => {
   }
 };
 
+const addPoints = async (messageId, pointsToAdd) => {
+  try {
+    await axiosInstance.post(`/messages/${messageId}/addPoints`, {
+      pointsToAdd,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 onMounted(() => {
   socket.on("newMessage", (message) => {
     state.messages.unshift(message);
@@ -72,6 +82,7 @@ onMounted(() => {
             :message="message"
             @delete-message="deleteMessage"
             @edit-message="saveEditedMessage"
+            @add-points="addPoints"
           />
         </div>
         <ChatInput @send-message="handleSendMessage" />

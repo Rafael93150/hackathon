@@ -20,17 +20,24 @@
       <div class="chat-message-content">{{ message.text }}</div>
     </div>
 
-    <div v-if="showDropdown && isCurrentUserMessage()" class="dropdown shadow">
+    <div v-if="showDropdown && (isCurrentUserMessage() || isCurrentUserAdmin())" class="dropdown shadow">
       <button @click="editMessage" class="dropdown-item mr-1">
         <font-awesome-icon :icon="['fas', 'edit']" />
       </button>
-      <button @click="deleteMessage(message._id)" class="dropdown-item text-red-400">
+      <button
+        @click="deleteMessage(message._id)"
+        class="dropdown-item text-red-400"
+      >
         <font-awesome-icon :icon="['fas', 'trash-alt']" />
+      </button>
+      <button v-if="isCurrentUserAdmin()" @click="addPoints(message._id, 100)" class="dropdown-item">
+        Points
       </button>
     </div>
   </div>
   <div v-else>
-    <input class="block w-full p-4 pl-4 focus:outline-none text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    <input
+      class="block w-full p-4 pl-4 focus:outline-none text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
       @keydown.enter="saveEditedMessage"
       v-model="editedMessageText"
       type="text"
@@ -80,9 +87,10 @@ export default {
       }
     },
     isCurrentUserMessage() {
-      return (
-        this.message.fromUser._id === mainStore.currentUser._id
-      );
+      return this.message.fromUser._id === mainStore.currentUser._id;
+    },
+    isCurrentUserAdmin() {
+      return mainStore.currentUser.role === "admin";
     },
     deleteMessage() {
       this.$emit("delete-message", this.message._id);
@@ -90,6 +98,9 @@ export default {
     editMessage() {
       this.editingMessage = true;
       this.editedMessageText = this.message.text;
+    },
+    addPoints(messageId, pointsToAdd) {
+      this.$emit("add-points", messageId, pointsToAdd);
     },
     saveEditedMessage() {
       this.$emit("edit-message", this.message._id, this.editedMessageText);

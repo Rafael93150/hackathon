@@ -3,6 +3,7 @@ import http from "http";
 import { Server } from "socket.io";
 import Message from "./src/models/message.js";
 import User from "./src/models/user.js";
+import { addPoints } from "./src/services/pointsService.js";
 
 const PORT = process.env.PORT || 3000;
 app.set("port", PORT);
@@ -38,6 +39,8 @@ io.on("connection", (socket) => {
               "fromUser",
               "firstname lastname picture"
             );
+
+            addPoints(fromUser, 10);
         
             io.emit("newMessage", populatedMessage);
           } catch (err) {
