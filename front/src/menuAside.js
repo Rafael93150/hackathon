@@ -1,45 +1,49 @@
-import {
-  mdiAccountCircle,
-  mdiMonitor,
-  mdiSquareEditOutline,
-  mdiTable,
-  mdiResponsive,
-} from "@mdi/js";
+  import {
+    mdiAccountCircle,
+    mdiMonitor
+  } from "@mdi/js";
 
-export default [
-  {
-    to: '/',
-    icon: mdiMonitor,
-    label: "Dashboard",
-  },
-  {
-    to: "/users",
-    label: "Utilisateur",
-    icon: mdiAccountCircle,
-  },
-  {
-    to: "/planning",
-    label: "Planning",
-    icon: mdiResponsive,
-  },
-  {
-    to: "/companies",
-    label: "Entreprise",
-    icon: mdiAccountCircle,
-  },
-  {
-    to: "/profile",
-    label: "Profile",
-    icon: mdiAccountCircle,
-  },
-  {
-    to: "/tables",
-    label: "Community",
-    icon: mdiTable,
-  },
-  {
-    to: "/training",
-    label: "Formation",
-    icon: mdiSquareEditOutline,
-  },
-];
+  export default [
+    {
+      to: '/',
+      icon: "/icons/Blancs/dashboard.png",
+      label: "Dashboard",
+      isPublicIcon: true
+    },
+    {
+      to: "/users",
+      label: "Utilisateur",
+      icon: "/icons/Blancs/community.png",
+      isPublicIcon: true
+    },
+    {
+      to: "/planning",
+      label: "Planning",
+      icon: "/icons/Blancs/calendar.png",
+      isPublicIcon: true
+    },
+    {
+      to: "/companies",
+      label: "Entreprise",
+      icon: "/icons/Blancs/companies.png",
+      isPublicIcon: true
+    },
+    {
+      to: "/profile",
+      label: "Profile",
+      icon: "/icons/Blancs/user.png",
+      isPublicIcon: true
+    },
+    {
+      to: "/tables",
+      label: "Tables",
+      icon: "/icons/Blancs/community.png",
+      isPublicIcon: true
+    },
+    {
+      to: "/training",
+      label: "Formation",
+      icon: "/icons/Blancs/training.png",
+      isPublicIcon: true
+    },
+  ];

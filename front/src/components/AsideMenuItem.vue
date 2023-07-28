@@ -59,6 +59,7 @@ const menuClick = (event) => {
     >
       <BaseIcon
         v-if="item.icon"
+        :isPublicIcon="props.item.isPublicIcon"
         :path="item.icon"
         class="flex-none"
         :class="[vSlot && vSlot.isExactActive ? asideMenuItemActiveStyle : '']"
