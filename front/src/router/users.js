@@ -15,4 +15,12 @@ export const usersRoutes = [
     name: "users create",
     component: () => import("@/views/users/UsersCreateView.vue"),
   },
+  {
+    meta: {
+      title: "User details",
+    },
+    path: "/users/:id",
+    name: "userDetail",
+    component: () => import("@/views/users/UserDetail.vue"),
+  },
 ];
