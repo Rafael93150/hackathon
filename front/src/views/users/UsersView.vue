@@ -24,6 +24,22 @@ const fetchUsers = async () => {
     console.error("Error fetching users:", error);
   }
 };
+const deleteUser = async (userId) => {
+    if (
+      confirm(
+        `Êtes-vous certain de vouloir procéder à la suppression de cet utilisateur ?`
+      )
+    ) {
+      axiosInstance
+        .delete(`users/${userId}`)
+        .then(() => {
+          fetchUsers();   
+        })
+        .catch((error) => {
+          console.error("Error deleting user:", error);
+        });
+    }
+  };
 init();
 </script>
 <template>
@@ -53,36 +69,11 @@ init();
             <table class="min-w-full divide-y divide-gray-300">
               <thead>
                 <tr>
-                  <th
-                    scope="col"
-                    class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
-                  >
-                    Name
-                  </th>
-                  <th
-                    scope="col"
-                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    Title
-                  </th>
-                  <th
-                    scope="col"
-                    class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900"
-                  >
-                    Niveau
-                  </th>
-                  <th
-                    scope="col"
-                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    Role
-                  </th>
-                  <th
-                    scope="col"
-                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    Edit
-                  </th>
+                  <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Informations personelles</th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Entreprise actuelle</th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Niveau</th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Rôle</th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Actions</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-200 bg-white">
@@ -141,9 +132,9 @@ init();
                 </tr>
               </tbody>
             </table>
+            </div>
           </div>
         </div>
-      </div>
-    </SectionMain>
-  </LayoutAuthenticated>
-</template>
+      </SectionMain>
+    </LayoutAuthenticated>
+  </template>

@@ -9,10 +9,12 @@ export const companiesRoutes = [
   },
   {
     meta: {
-      title: "Create company",
+      title: "Créer une entreprise",
     },
     path: "/companies/create",
     name: "companies create",
     component: () => import("@/views/companies/CompaniesCreateView.vue"),
   },
+
+  
 ];

@@ -1,5 +1,5 @@
 <script setup>
-import { reactive } from "vue"; 
+import { reactive } from "vue"; // Importez ref pour créer des références réactives
 import SectionMain from "@/components/SectionMain.vue";
 import CardBox from "@/components/CardBox.vue";
 import FormField from "@/components/FormField.vue";
@@ -22,15 +22,15 @@ const state = reactive({
     skills: [],
     password: ""
   },
+  responseMessage: ""
 });
 
+const route = useRoute();
+const userId = route.query.userId; // Access the userId query parameter
 
-const createUser = async () => {
-    axiosInstance.post("users", state.newUser).then((response) => {
-    showToast(response.data.message);
-    }).catch ((error) => {
-    console.error("Erreur lors de la création de l'utilisateur:", error);
-    });
+
+const updateUser = async () => {
+
 };
 
 </script>
@@ -40,13 +40,13 @@ const createUser = async () => {
     <SectionMain>
       <SectionTitleLineWithButton
         :icon="mdiAccountPlusOutline"
-        title="Ajout d'un nouvel utilisateur"
+        title="Modifier l'utilisateur"
         main
       />
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 form-container">
       <!-- Formulaire de création d'utilisateur -->
-      <CardBox is-form @submit.prevent="createUser" class="shadow">
+      <CardBox is-form @submit.prevent="updateUser" class="shadow">
           <FormField label="Nom" help="Votre nom">
             <FormControl
               v-model="state.newUser.firstname"
@@ -123,7 +123,7 @@ const createUser = async () => {
         <!-- Autres champs du formulaire ici -->
         <template #footer>
             <BaseButtons>
-              <BaseButton class="button" color="info" type="submit" label="Créer" />
+              <BaseButton class="button" color="info" type="submit" label="Modifier" />
             </BaseButtons>
           </template>
 
@@ -151,7 +151,7 @@ const createUser = async () => {
     width: 300px;
     justify-content: center;
     align-items: center;
-    background-color: #00BB7E;
+    background-color: #d62020;
     margin-left: 50px;
   }
 </style>

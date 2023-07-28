@@ -1,7 +1,7 @@
 export const usersRoutes = [
   {
     meta: {
-      title: "Users",
+      title: "Utilisateurs",
     },
     path: "/users",
     name: "users",
@@ -9,7 +9,7 @@ export const usersRoutes = [
   },
   {
     meta: {
-      title: "Create user",
+      title: "Créer un utilisateur",
     },
     path: "/users/create",
     name: "users create",
@@ -23,4 +23,12 @@ export const usersRoutes = [
     name: "userDetail",
     component: () => import("@/views/users/UserDetail.vue"),
   },
+  {
+    meta: {
+      title: "Modifier un utilisateur",
+    },
+    path: "/users/update/:userId",
+    name: "usersUpdate",
+    component: () => import("@/views/users/UsersUpdateView.vue"),
+  }
 ];

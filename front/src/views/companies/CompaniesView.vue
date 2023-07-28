@@ -59,7 +59,7 @@ init();
             />
           </div>
           <div class="min-w-0 flex-1">
-            <a href="#" class="focus:outline-none">
+            <a :href="`/companies/${company._id}`" class="focus:outline-none">
               <span class="absolute inset-0" aria-hidden="true" />
               <p class="text-sm font-medium text-gray-900">
                 {{ company.name }}
