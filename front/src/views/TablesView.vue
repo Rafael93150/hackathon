@@ -4,35 +4,71 @@ import ChatMessages from "@/components/ChatMessages.vue";
 import SectionMain from "@/components/SectionMain.vue";
 import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
 import axiosInstance from "@/utils/axiosInstance";
-import { ref } from "vue";
+import { onMounted, reactive } from "vue";
+import { useMainStore } from "@/stores/main";
+import io from "socket.io-client";
 
-const state = ref({
+const mainStore = useMainStore();
+const socket = io("http://localhost:3000");
+
+const state = reactive({
   messages: [],
 });
 
-const init = async () => {
-  await fetchEvents();
-};
+axiosInstance.get("/messages/populated").then((response) => {
+  state.messages = response.data.reverse();
+});
 
-const fetchEvents = async () => {
-  state.messages = await axiosInstance.get("/messages/").then((response) => {
-    return response.data;
+const handleSendMessage = (message) => {
+  socket.emit("newMessage", {
+    fromUser: mainStore.currentUser._id,
+    text: message,
   });
 };
 
-const handleSendMessage = (message) => {
-  // Ici, vous pouvez ajouter la logique pour envoyer le message au serveur
-  // et mettre à jour la liste des messages côté client.
-  // Exemple :
-  // messages.value.push({
-  //   id: messages.value.length + 1,
-  //   sender: "Utilisateur 1",
-  //   content: message,
-  // });
+const deleteMessage = async (messageId) => {
+  try {
+    await axiosInstance.delete(`/messages/${messageId}`);
+    state.messages = state.messages.filter(
+      (message) => message._id !== messageId
+    );
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-init();
+const saveEditedMessage = async (messageId, messageText) => {
+  try {
+    if (messageText.trim() === "") {
+      await axiosInstance.delete(`/messages/${messageId}`);
+      state.messages = state.messages.filter(
+        (message) => message._id !== messageId
+      );
+    } else {
+      await axiosInstance.put(`/messages/${messageId}`, {
+        text: messageText,
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
 
+const addPoints = async (messageId, pointsToAdd) => {
+  try {
+    await axiosInstance.post(`/messages/${messageId}/addPoints`, {
+      pointsToAdd,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+onMounted(() => {
+  socket.on("newMessage", (message) => {
+    state.messages.unshift(message);
+  });
+});
 </script>
 
 <template>
@@ -40,10 +76,26 @@ init();
     <SectionMain>
       <div class="chat">
         <div class="chat-messages">
-          <ChatMessages v-for="message in state.messages" :key="message._id" :message="message" />
+          <ChatMessages
+            v-for="message in state.messages"
+            :key="message._id"
+            :message="message"
+            @delete-message="deleteMessage"
+            @edit-message="saveEditedMessage"
+            @add-points="addPoints"
+          />
         </div>
-        <!-- <ChatInput @send-message="handleSendMessage" /> -->
+        <ChatInput @send-message="handleSendMessage" />
       </div>
     </SectionMain>
   </LayoutAuthenticated>
 </template>
+
+<style>
+.chat-messages {
+  display: flex;
+  flex-direction: column-reverse;
+  height: calc(100vh - 150px);
+  overflow-y: scroll;
+}
+</style>

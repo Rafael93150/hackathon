@@ -6,6 +6,9 @@ import router from "./router";
 import { useMainStore } from "@/stores/main.js";
 import { useStyleStore } from "@/stores/style.js";
 import { darkModeKey, styleKey } from "@/config.js";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 import "./css/main.css";
 
@@ -13,7 +16,13 @@ import "./css/main.css";
 const pinia = createPinia();
 
 /* Create Vue app */
-createApp(App).use(router).use(pinia).mount("#app");
+const app = createApp(App);
+app.use(router);
+app.use(pinia);
+app.mount("#app");
+
+library.add(faEdit, faTrashAlt);
+app.component('font-awesome-icon', FontAwesomeIcon);
 
 const styleStore = useStyleStore(pinia);
 
