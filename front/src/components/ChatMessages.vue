@@ -5,11 +5,16 @@
     @mouseover="showDropdown = true"
     @mouseleave="showDropdown = false"
   >
-    <img
-      class="chat-message-sender-picture"
-      src="https://avatars.githubusercontent.com/u/33639752?v=4"
-      :alt="`Image de profil de ${message.fromUser.firstname}`"
-    />
+    <div
+      class="avatar chat-message-sender-picture rounded-full block bg-gray-100 dark:bg-slate-800"
+      :style="{
+        backgroundImage: `url(${
+          message.fromUser.picture
+            ? message.fromUser.picture
+            : 'https://avatars.githubusercontent.com/u/33639752?v=4'
+        })`,
+      }"
+    ></div>
     <div>
       <span class="chat-message-sender"
         >{{ message.fromUser.firstname }} {{ message.fromUser.lastname }}
@@ -20,7 +25,10 @@
       <div class="chat-message-content">{{ message.text }}</div>
     </div>
 
-    <div v-if="showDropdown && (isCurrentUserMessage() || isCurrentUserAdmin())" class="dropdown shadow">
+    <div
+      v-if="showDropdown && (isCurrentUserMessage() || isCurrentUserAdmin())"
+      class="dropdown shadow"
+    >
       <button @click="editMessage" class="dropdown-item mr-1">
         <font-awesome-icon :icon="['fas', 'edit']" />
       </button>
@@ -30,7 +38,11 @@
       >
         <font-awesome-icon :icon="['fas', 'trash-alt']" />
       </button>
-      <button v-if="isCurrentUserAdmin()" @click="addPoints(message._id, 100)" class="dropdown-item">
+      <button
+        v-if="isCurrentUserAdmin()"
+        @click="addPoints(message._id, 100)"
+        class="dropdown-item"
+      >
         Points
       </button>
     </div>
