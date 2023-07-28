@@ -6,9 +6,9 @@ import router from "./router";
 import { useMainStore } from "@/stores/main.js";
 import { useStyleStore } from "@/stores/style.js";
 import { darkModeKey, styleKey } from "@/config.js";
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 import "./css/main.css";
 
@@ -22,12 +22,12 @@ app.use(pinia);
 app.mount("#app");
 
 library.add(faEdit, faTrashAlt);
-app.component('font-awesome-icon', FontAwesomeIcon);
+app.component("FontAwesomeIcon", FontAwesomeIcon);
 
 const styleStore = useStyleStore(pinia);
 
 /* App style */
-styleStore.setStyle( "basic");
+styleStore.setStyle("basic");
 
 /* Dark mode */
 if (
