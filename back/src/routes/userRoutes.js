@@ -57,8 +57,8 @@ export const createUser = async (req, res) => {
             companies,
             picture,
         } = req.body;
-
-        if (!(firstname && lastname && email && password && role))
+        // role commenté pour l'instant
+        if (!(firstname && lastname && email && password))
             throw new Error("Invalid arguments");
 
         const hashedPassword = await bcrypt.hash(password, 10);
