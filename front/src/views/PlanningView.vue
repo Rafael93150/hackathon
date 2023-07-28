@@ -4,8 +4,7 @@ import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import axios from "axios";
-import {reactive} from "vue";
+import { reactive } from "vue";
 import SectionMain from "@/components/SectionMain.vue";
 import axiosInstance from "@/utils/axiosInstance";
 
@@ -16,7 +15,7 @@ const state = reactive({
     headerToolbar: {
       left: "prev,next today",
       center: "title",
-      right: "dayGridMonth,timeGridWeek,timeGridDay"
+      right: "dayGridMonth,timeGridWeek,timeGridDay",
     },
     events: [],
     editable: true,
@@ -28,11 +27,13 @@ const state = reactive({
   currentEvents: [],
   openModal: false,
   selectedDate: null,
+  selectedEvent: null,
+  isUpdating: false,
   newEvent: {
     title: "",
     start: "",
     end: "",
-  }
+  },
 });
 
 const init = async () => {
@@ -41,102 +42,153 @@ const init = async () => {
 
 const fetchEvents = async () => {
   try {
-    state.calendarOptions.events = await axiosInstance.get("calendar/events").then((response) => {
-      return response.data.map((event) => {
-        return {
-          id: event.id,
-          title: event.summary,
-          start: event.start.dateTime,
-          end: event.end.dateTime,
-        };
+    state.calendarOptions.events = await axiosInstance
+      .get("calendar/events")
+      .then((response) => {
+        return response.data.map((event) => {
+          return {
+            id: event.id,
+            title: event.summary,
+            start: event.start.dateTime,
+            end: event.end.dateTime,
+          };
+        });
       });
-    });
   } catch (error) {
     console.error("Error fetching events:", error);
   }
-};
-const handleWeekendsToggle = () => {
-  state.calendarOptions.weekends = !state.calendarOptions.weekends;
-};
+}
 
 const handleDateSelect = (selectInfo) => {
   state.openModal = true;
-  state.newEvent.start = selectInfo.startStr;
-  state.newEvent.end = selectInfo.endStr;
+  state.isUpdating = false;
+  state.newEvent.start = new Date(selectInfo.startStr).toISOString().slice(0, 16),
+  state.newEvent.end =  new Date(selectInfo.endStr).toISOString().slice(0, 16)
 };
 
 const createEvent = () => {
-  axios.post("http://localhost:3000/calendar/events", {
-    summary: state.newEvent.title,
-    start: {
-      dateTime: new Date(state.newEvent.start).toISOString(),
-      timeZone: "Europe/Paris"
-    },
-    end: {
-      dateTime: new Date(state.newEvent.end).toISOString(),
-      timeZone: "Europe/Paris"
-    }
-  }).then((response) => {
-    state.calendarOptions.events = [
-      ...state.calendarOptions.events,
-      {
-        id: response.data.event.id,
-        title: response.data.event.summary,
-        start: response.data.event.start.dateTime,
-        end: response.data.event.end.dateTime
-      }
-    ];
-    state.openModal = false;
-    state.newEvent = {
-      title: "",
-      start: "",
-      end: ""
-    };
-  }).catch((error) => {
-    // Gérer les erreurs de création d'événement ici (si besoin)
-    console.error("Error creating event:", error);
-    // Fermer la modal en cas d'erreur
-    state.openModal = false;
-  });
+  axiosInstance
+    .post("calendar/events", {
+      summary: state.newEvent.title,
+      start: {
+        dateTime: new Date(state.newEvent.start).toISOString(),
+        timeZone: "Europe/Paris",
+      },
+      end: {
+        dateTime: new Date(state.newEvent.end).toISOString(),
+        timeZone: "Europe/Paris",
+      },
+    })
+    .then((response) => {
+      state.calendarOptions.events = [
+        ...state.calendarOptions.events,
+        {
+          id: response.data.event.id,
+          title: response.data.event.summary,
+          start: response.data.event.start.dateTime,
+          end: response.data.event.end.dateTime,
+        },
+      ];
+      state.openModal = false;
+      state.newEvent = {
+        title: "",
+        start: "",
+        end: "",
+      };
+    })
+    .catch((error) => {
+      // Gérer les erreurs de création d'événement ici (si besoin)
+      console.error("Error creating event:", error);
+      // Fermer la modal en cas d'erreur
+      state.openModal = false;
+    });
 };
 
 const handleEventClick = (clickInfo) => {
-  if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-    // Envoyez une requête DELETE à votre API pour supprimer l'événement du backend
-    axios.delete(`http://localhost:3000/calendar/events/${clickInfo.event.id}`).then(() => {
-      // Si la suppression est réussie, mettez à jour les événements dans le calendrier
-      const updatedEvents = state.calendarOptions.events.filter((event) => event.id !== clickInfo.event.id);
-      state.calendarOptions.events = updatedEvents;
-    }).catch((error) => {
-      // Gérer les erreurs de suppression ici (si besoin)
-      console.error("Error deleting event:", error);
-    });
+  state.openModal = true;
+  state.isUpdating = true;
+  state.selectedEvent = clickInfo.event;
+  state.newEvent = {
+    title: clickInfo.event.title,
+    start: new Date(clickInfo.event.start).toISOString().slice(0, 16),
+    end: new Date(clickInfo.event.end).toISOString().slice(0, 16),
+  };
+};
+
+const deleteEvent = () => {
+  if (
+    confirm(
+      `Are you sure you want to delete the event '${state.selectedEvent.title}'`
+    )
+  ) {
+    axiosInstance
+      .delete(`calendar/events/${state.selectedEvent?.id}`)
+      .then(() => {
+        const updatedEvents = state.calendarOptions.events.filter(
+          (event) => event.id !== state.selectedEvent?.id
+        );
+        state.calendarOptions.events = updatedEvents;
+      })
+      .catch((error) => {
+        console.error("Error deleting event:", error);
+      });
+    state.openModal = false;
+    state.selectedEvent = null;
+    state.newEvent = {
+      title: "",
+      start: "",
+      end: "",
+    };
   }
 };
 
-const formatDate = (date) => {
-  return date ? new Date(date).toLocaleString() : "";
+const updateEvent = () => {
+  axiosInstance
+    .put("calendar/events/" + state.selectedEvent.id, {
+      summary: state.newEvent.title,
+      start: {
+        dateTime: new Date(state.newEvent.start).toISOString(),
+        timeZone: "Europe/Paris",
+      },
+      end: {
+        dateTime: new Date(state.newEvent.end).toISOString(),
+        timeZone: "Europe/Paris",
+      },
+    })
+    .then((response) => {
+      state.calendarOptions.events = [
+        ...state.calendarOptions.events,
+        {
+          id: response.data.event.id,
+          title: response.data.event.summary,
+          start: response.data.event.start.dateTime,
+          end: response.data.event.end.dateTime,
+        },
+      ];
+      state.openModal = false;
+      state.newEvent = {
+        title: "",
+        start: "",
+        end: "",
+      };
+    });
+};
+
+const closeModal = () => {
+  state.openModal = false;
+  state.newEvent = {
+    title: "",
+    start: "",
+    end: "",
+  };
 };
 
 init();
-
 </script>
 
 <template>
   <LayoutAuthenticated>
     <SectionMain>
-      <div class="demo-app-sidebar">
-        <div class="demo-app-sidebar-section">
-          <label>
-            <input
-              type="checkbox"
-              :checked="state.calendarOptions.weekends"
-              @change="handleWeekendsToggle"
-            />
-            toggle weekends
-          </label>
-        </div>
-      </div>
       <div class="demo-app-main">
         <FullCalendar
           class="demo-app-calendar"
@@ -144,37 +196,75 @@ init();
             ...state.calendarOptions,
             events: state.calendarOptions.events || [],
             eventClick: handleEventClick,
-            select: handleDateSelect
+            select: handleDateSelect,
           }"
         />
       </div>
 
-      <div v-if="state.openModal" class="fixed inset-0 flex items-center justify-center z-50">
+      <div
+        v-if="state.openModal"
+        class="fixed inset-0 flex items-center justify-center z-50"
+      >
         <div class="fixed inset-0 bg-black opacity-60"></div>
-        <div class="bg-white p-4 rounded shadow-lg z-[60]">
-          <h2 class="text-lg font-semibold mb-4">Créer un nouvel événement</h2>
+        <div class="bg-white p-4 w-full max-w-xl rounded shadow-lg z-[60]">
+          <h2 class="text-lg font-semibold mb-4">
+            {{
+              state.isUpdating
+                ? "Modifier l'événement"
+                : "Créer un nouvel événement"
+            }}
+          </h2>
           <div>
             <label class="block mb-2">Titre :</label>
-            <input type="text" v-model="state.newEvent.title" class="w-full px-2 py-1 border rounded mb-4" />
+            <input
+              v-model="state.newEvent.title"
+              type="text"
+              required
+              class="w-full px-2 py-1 border rounded mb-4"
+            />
           </div>
           <div>
             <label class="block mb-2">Date de début :</label>
-            <input type="text" :value="formatDate(state.newEvent.start)"
-                   class="w-full px-2 py-1 border rounded mb-4" disabled />
+            <input
+              v-model="state.newEvent.start"
+              type="datetime-local"
+              class="w-full px-2 py-1 border rounded mb-4"
+            />
           </div>
           <div>
             <label class="block mb-2">Date de fin :</label>
-            <input type="text" :value="formatDate(state.newEvent.end)"
-                   class="w-full px-2 py-1 border rounded mb-4"
-                   disabled />
+            <input
+              v-model="state.newEvent.end"
+              type="datetime-local"
+              class="w-full px-2 py-1 border rounded mb-4"
+            />
           </div>
-          <div class="flex justify-end">
-            <button @click="state.openModal = false" class="mr-2">Annuler</button>
-            <button @click="createEvent" class="bg-blue-500 text-white px-4 py-2 rounded">Créer</button>
+          <div class="flex justify-end space-x-2">
+            <button @click="closeModal">Annuler</button>
+            <button
+              v-if="!state.isUpdating"
+              class="bg-[#5B98D2] text-white px-4 py-2 rounded"
+              @click="createEvent"
+            >
+              Créer
+            </button>
+            <button
+              v-if="state.isUpdating"
+              class="bg-[#E53F49] text-white px-4 py-2 rounded"
+              @click="updateEvent"
+            >
+              Modifier
+            </button>
+            <button
+              v-if="state.isUpdating"
+              class="text-white px-4 py-2 rounded bg-red-600"
+              @click="deleteEvent"
+            >
+              Supprimer
+            </button>
           </div>
         </div>
       </div>
-
     </SectionMain>
   </LayoutAuthenticated>
 </template>
