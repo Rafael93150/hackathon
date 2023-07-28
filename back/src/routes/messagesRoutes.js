@@ -13,9 +13,42 @@ export const getAllMessages = async (req, res) => {
     }
 };
 
+export const getAllMessagesWithUserDetails = async (req, res) => {
+    try {
+        const messages = await Message.find().populate(
+            "fromUser",
+            "firstname lastname picture"
+        );
+        res.json(messages);
+    } catch (err) {
+        res.status(500).json({
+            message:
+                "Une erreur est survenue lors de la récupération des messages.",
+        });
+    }
+};
+
 export const getMessageById = async (req, res) => {
     try {
         const message = await Message.findById(req.params.messageId);
+        if (!message) {
+            return res.status(404).json({ message: "Message non trouvé." });
+        }
+        res.json(message);
+    } catch (err) {
+        res.status(500).json({
+            message:
+                "Une erreur est survenue lors de la récupération du message.",
+        });
+    }
+};
+
+export const getMessageByIdWithUserDetails = async (req, res) => {
+    try {
+        const message = await Message.findById(req.params.messageId).populate(
+            "fromUser",
+            "firstname lastname picture"
+        );
         if (!message) {
             return res.status(404).json({ message: "Message non trouvé." });
         }
@@ -39,11 +72,11 @@ export const createMessage = async (req, res) => {
             files,
         });
         const savedMessage = await newMessage.save();
-        io.emit("newMessage", savedMessage);
+        addPoints(message.fromUser, 10);
         res.status(201).json(savedMessage);
     } catch (err) {
         res.status(500).json({
-            message: "Une erreur est survenue lors de l'envoi du message.",
+            message: `Une erreur est survenue lors de l'envoi du message : ${err}`,
         });
     }
 };
