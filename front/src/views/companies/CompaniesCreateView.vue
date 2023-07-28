@@ -30,6 +30,7 @@ const createCompany = async () => {
   console.log(state.newCompany);
     axiosInstance.post("companies", state.newCompany).then((response) => {
     showToast(response.data.message);
+    window.location.href = "#/companies";
     }).catch ((error) => {
     console.error("Erreur lors de la création de l'entreprise:", error);
     });

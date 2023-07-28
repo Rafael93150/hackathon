@@ -28,10 +28,12 @@ const state = reactive({
 const createUser = async () => {
     axiosInstance.post("users", state.newUser).then((response) => {
     showToast(response.data.message);
+    window.location.href = "#/users";
     }).catch ((error) => {
     console.error("Erreur lors de la création de l'utilisateur:", error);
     });
 };
+
 
 </script>
 

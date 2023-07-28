@@ -40,6 +40,7 @@ const deleteUser = async (userId) => {
         });
     }
   };
+
 init();
 </script>
 <template>
@@ -125,8 +126,14 @@ init();
                   <td class="whitespace-nowrap px-3 py-5 text-sm">
                     <a
                       :href="`/users/${person._id}`"
-                      class="text-indigo-600 hover:text-indigo-900"
-                      >Edit</a
+                      class="text-black-300 hover:text-green-800"
+                      >Modifier </a
+                    >
+                    <a
+                      href="/users/"
+                      class="text-red-600 hover:text-red-800"
+                      @click="deleteUser(person._id)"
+                      >Supprimer</a
                     >
                   </td>
                 </tr>
