@@ -33,10 +33,11 @@ const deleteUser = async (userId) => {
       axiosInstance
         .delete(`users/${userId}`)
         .then(() => {
-          fetchUsers();   
+          showToast(response.data.message);
+          fetchUsers();  
         })
         .catch((error) => {
-          console.error("Error deleting user:", error);
+          console.error("Erreur lors de la suppression de l'utilisateur:", error);
         });
     }
   };
@@ -125,7 +126,7 @@ init();
                   </td>
                   <td class="whitespace-nowrap px-3 py-5 text-sm">
                     <a
-                      :href="`/users/${person._id}`"
+                      :href="`/users/update/${person._id}`"
                       class="text-black-300 hover:text-green-800"
                       >Modifier </a
                     >
@@ -133,7 +134,7 @@ init();
                       href="/users/"
                       class="text-red-600 hover:text-red-800"
                       @click="deleteUser(person._id)"
-                      >Supprimer</a
+                      > Supprimer</a
                     >
                   </td>
                 </tr>

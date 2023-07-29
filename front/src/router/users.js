@@ -30,5 +30,5 @@ export const usersRoutes = [
     path: "/users/update/:userId",
     name: "usersUpdate",
     component: () => import("@/views/users/UsersUpdateView.vue"),
-  }
-];
+  },
+]
