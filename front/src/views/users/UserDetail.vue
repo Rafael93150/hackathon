@@ -49,7 +49,7 @@ init();
     <SectionMain>
       <SectionTitleLineWithButton
         :icon="mdiChartTimelineVariant"
-        title="Détail utilisateur"
+        title="Détails de l'utilisateur"
         main
       >
         <BaseButton
@@ -168,7 +168,7 @@ init();
                     id="personal-information"
                     class="text-lg font-medium leading-6 text-gray-900"
                   >
-                    Entreprise
+                    Entreprises
                   </h2>
                   <p class="mt-1 text-sm text-gray-500">
                     Parcours de l'utilisateur dans les entreprises.

@@ -12,7 +12,7 @@
     },
     {
       to: "/users",
-      label: "Utilisateur",
+      label: "Utilisateurs",
       icon: "/icons/Blancs/community.png",
       isPublicIcon: true
     },
@@ -24,7 +24,7 @@
     },
     {
       to: "/companies",
-      label: "Entreprise",
+      label: "Entreprises",
       icon: "/icons/Blancs/companies.png",
       isPublicIcon: true
     },
@@ -36,13 +36,13 @@
     },
     {
       to: "/tables",
-      label: "Tables",
+      label: "Communauté",
       icon: "/icons/Blancs/community.png",
       isPublicIcon: true
     },
     {
       to: "/training",
-      label: "Formation",
+      label: "Formations",
       icon: "/icons/Blancs/training.png",
       isPublicIcon: true
     },

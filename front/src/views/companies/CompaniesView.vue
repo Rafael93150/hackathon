@@ -30,7 +30,7 @@ init();
     <SectionMain>
       <SectionTitleLineWithButton
         :icon="mdiCertificate"
-        title="Entreprise"
+        title="Entreprises"
         main
       >
         <BaseButton

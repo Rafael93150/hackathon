@@ -24,23 +24,22 @@ const fetchUsers = async () => {
     console.error("Error fetching users:", error);
   }
 };
+
 const deleteUser = async (userId) => {
-    if (
-      confirm(
-        `Êtes-vous certain de vouloir procéder à la suppression de cet utilisateur ?`
-      )
-    ) {
-      axiosInstance
-        .delete(`users/${userId}`)
-        .then(() => {
-          showToast(response.data.message);
-          fetchUsers();  
-        })
-        .catch((error) => {
-          console.error("Erreur lors de la suppression de l'utilisateur:", error);
-        });
+  if (
+    confirm(
+      `Êtes-vous certain de vouloir procéder à la suppression de cet utilisateur ?`
+    )
+  ) {
+    try {
+      const response = await axiosInstance.delete(`users/${userId}`);
+      showToast(response.data.message);
+      fetchUsers();
+    } catch (error) {
+      console.error("Erreur lors de la suppression de l'utilisateur:", error);
     }
-  };
+  }
+};
 
 init();
 </script>
@@ -131,7 +130,6 @@ init();
                       >Modifier </a
                     >
                     <a
-                      href="/users/"
                       class="text-red-600 hover:text-red-800"
                       @click="deleteUser(person._id)"
                       > Supprimer</a

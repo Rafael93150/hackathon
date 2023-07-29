@@ -66,7 +66,7 @@ init();
 <template>
   <LayoutAuthenticated>
     <SectionMain>
-      <SectionTitleLineWithButton :icon="mdiCertificate" title="Formation" main>
+      <SectionTitleLineWithButton :icon="mdiCertificate" title="Formations  " main>
         <form @submit.prevent="submit">
           <div>
             <label
