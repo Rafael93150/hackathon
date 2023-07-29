@@ -18,12 +18,12 @@ export default [
     menu: [
       {
         icon: mdiAccount,
-        label: "My Profile",
+        label: "Mon profil",
         to: "/profile",
       },
       {
         icon: mdiCogOutline,
-        label: "Settings",
+        label: "Paramètres",
       },
       {
         isDivider: true,

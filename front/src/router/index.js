@@ -43,7 +43,7 @@ const routes = [
   },
   {
     meta: {
-      title: "Profile",
+      title: "Profil",
     },
     path: "/profile",
     name: "profile",

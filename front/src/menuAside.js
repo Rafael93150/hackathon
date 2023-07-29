@@ -7,7 +7,7 @@
     {
       to: '/',
       icon: "/icons/Blancs/dashboard.png",
-      label: "Dashboard",
+      label: "Accueil",
       isPublicIcon: true
     },
     {
@@ -30,7 +30,7 @@
     },
     {
       to: "/profile",
-      label: "Profile",
+      label: "Profil",
       icon: "/icons/Blancs/user.png",
       isPublicIcon: true
     },
