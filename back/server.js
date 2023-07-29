@@ -24,26 +24,43 @@ io.on("connection", (socket) => {
     socket.on("newMessage", async (messageData) => {
         try {
             const { fromUser, toUser, text, images, files } = messageData;
-            
+
             const newMessage = new Message({
-              fromUser,
-              toUser,
-              text,
-              images,
-              files,
+                fromUser,
+                toUser,
+                text,
+                images,
+                files,
             });
-        
+
             const savedMessage = await newMessage.save();
-        
-            const populatedMessage = await Message.findById(savedMessage._id).populate(
-              "fromUser",
-              "firstname lastname picture"
-            );
+
+            const populatedMessage = await Message.findById(
+                savedMessage._id
+            ).populate("fromUser", "firstname lastname picture");
 
             addPoints(fromUser, 10);
-        
+
             io.emit("newMessage", populatedMessage);
-          } catch (err) {
+        } catch (err) {
+            console.error(err);
+        }
+    });
+
+    socket.on("editMessage", async (messageId, newText) => {
+        try {
+            await Message.findByIdAndUpdate(messageId, { text: newText });
+            io.emit("editMessage", messageId, newText);
+        } catch (err) {
+            console.error(err);
+        }
+    });
+
+    socket.on("deleteMessage", async (messageId) => {
+        try {
+            await Message.findByIdAndDelete(messageId);
+            io.emit("deleteMessage", messageId);
+        } catch (err) {
             console.error(err);
         }
     });

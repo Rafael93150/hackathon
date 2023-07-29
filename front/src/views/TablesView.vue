@@ -28,10 +28,8 @@ const handleSendMessage = (message) => {
 
 const deleteMessage = async (messageId) => {
   try {
-    await axiosInstance.delete(`/messages/${messageId}`);
-    state.messages = state.messages.filter(
-      (message) => message._id !== messageId
-    );
+    console.log("appui sur supprimer");
+    socket.emit("deleteMessage", messageId);
   } catch (error) {
     console.error(error);
   }
@@ -40,14 +38,9 @@ const deleteMessage = async (messageId) => {
 const saveEditedMessage = async (messageId, messageText) => {
   try {
     if (messageText.trim() === "") {
-      await axiosInstance.delete(`/messages/${messageId}`);
-      state.messages = state.messages.filter(
-        (message) => message._id !== messageId
-      );
+      socket.emit("deleteMessage", messageId);
     } else {
-      await axiosInstance.put(`/messages/${messageId}`, {
-        text: messageText,
-      });
+      socket.emit("editMessage", messageId, messageText);
     }
   } catch (error) {
     console.error(error);
@@ -67,6 +60,19 @@ const addPoints = async (messageId, pointsToAdd) => {
 onMounted(() => {
   socket.on("newMessage", (message) => {
     state.messages.unshift(message);
+  });
+  socket.on("deleteMessage", (messageId) => {
+    state.messages = state.messages.filter(
+      (message) => message._id.toString() !== messageId.toString()
+    );
+  });
+  socket.on("editMessage", (messageId, newText) => {
+    state.messages = state.messages.map((message) => {
+      if (message._id.toString() === messageId.toString()) {
+        message.text = newText;
+      }
+      return message;
+    });
   });
 });
 </script>

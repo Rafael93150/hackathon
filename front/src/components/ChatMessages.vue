@@ -9,15 +9,15 @@
       class="avatar chat-message-sender-picture rounded-full block bg-gray-100 dark:bg-slate-800"
       :style="{
         backgroundImage: `url(${
-          message.fromUser.picture
-            ? message.fromUser.picture
+          message.fromUser?.picture
+            ? message.fromUser?.picture
             : 'https://avatars.githubusercontent.com/u/33639752?v=4'
         })`,
       }"
     ></div>
     <div>
       <span class="chat-message-sender"
-        >{{ message.fromUser.firstname }} {{ message.fromUser.lastname }}
+        >{{ message.fromUser ? message.fromUser.firstname : 'Compte supprimé' }} {{ message.fromUser?.lastname }}
         <small class="chat-message-date">{{
           formatDate(message.createdAt)
         }}</small></span
@@ -99,7 +99,7 @@ export default {
       }
     },
     isCurrentUserMessage() {
-      return this.message.fromUser._id === mainStore.currentUser._id;
+      return this.message.fromUser?._id === mainStore.currentUser?._id;
     },
     isCurrentUserAdmin() {
       return mainStore.currentUser.role === "admin";
