@@ -31,7 +31,7 @@ onMounted(() => {
     <SectionMain>
       <SectionTitleLineWithButton
         :icon="mdiChartTimelineVariant"
-        title="Overview"
+        title="Vue d'ensemble"
         main
       >
       </SectionTitleLineWithButton>
@@ -42,15 +42,15 @@ onMounted(() => {
           trend-type="up"
           color="text-emerald-500"
           :icon="mdiAccountMultiple"
-          :number="7"
-          label="Employees"
+          :number="5"
+          label="Employés"
         />
         <CardBoxWidget
           trend="12%"
           trend-type="down"
           color="text-blue-500"
           :icon="mdicompany"
-          :number="10"
+          :number="16"
           label="Entreprises"
         />
         <CardBoxWidget
@@ -58,13 +58,13 @@ onMounted(() => {
           trend-type="alert"
           color="text-red-500"
           :icon="mdiChartTimelineVariant"
-          :number="256"
+          :number="112"
           label="Formations"
         />
       </div>
 
 
-      <SectionTitleLineWithButton :icon="mdiChartPie" title="Trends overview">
+      <SectionTitleLineWithButton :icon="mdiChartPie" title="Aperçu graphique">
         <BaseButton
           :icon="mdiReload"
           color="whiteDark"
