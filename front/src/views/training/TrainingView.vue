@@ -13,6 +13,7 @@ import {
 import axiosInstance from "@/utils/axiosInstance";
 import { reactive } from "vue";
 import { MagnifyingGlassIcon } from "@heroicons/vue/20/solid";
+import { onMounted } from 'vue';
 
 const state = reactive({
   trainings: [],
@@ -22,6 +23,27 @@ const state = reactive({
 });
 const init = async () => {
   await fetchTraining();
+};
+
+onMounted(() => {
+    initSearch();
+});
+
+const initSearch = async () => {
+    try {
+      // Effectuer la recherche avec le terme "JavaScript" par défaut
+      state.trainings = await axiosInstance
+        .get("/training/search", {
+          params: {
+            search_query: "NodeJs",
+          },
+        })
+        .then((response) => {
+          return response.data;
+        });
+    } catch (error) {
+      console.error("Error fetching Trainings:", error);
+    }
 };
 
 const selectVideo = (video) => {
@@ -105,7 +127,7 @@ init();
         </form>
       </SectionTitleLineWithButton>
       <div
-        class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3"
+        class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-4"
       >
         <article
           v-for="post in state.trainings"

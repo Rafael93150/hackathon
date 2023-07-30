@@ -16,6 +16,9 @@ export const searchVideoGoogleApi = async (req, res, next) => {
       part: "snippet",
       q: searchQuery,
       type: "video",
+      maxResults: 16,
+      order: "date",
+      regionCode: "FR",
     });
 
     // Map through the response items and extract the relevant information
@@ -35,7 +38,3 @@ export const searchVideoGoogleApi = async (req, res, next) => {
     next(error);
   }
 };
-
-
-
-
