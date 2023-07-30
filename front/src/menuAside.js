@@ -8,15 +8,15 @@ export default [
     isPublicIcon: true,
   },
   {
-    to: "/users",
-    label: "Utilisateurs",
-    icon: "/icons/Blancs/community.png",
+    to: "/profile",
+    label: "Profil",
+    icon: "/icons/Blancs/user.png",
     isPublicIcon: true,
   },
   {
-    to: "/planning",
-    label: "Planning",
-    icon: "/icons/Blancs/calendar.png",
+    to: "/users",
+    label: "Utilisateurs",
+    icon: "/icons/Blancs/community.png",
     isPublicIcon: true,
   },
   {
@@ -26,9 +26,9 @@ export default [
     isPublicIcon: true,
   },
   {
-    to: "/profile",
-    label: "Profil",
-    icon: "/icons/Blancs/user.png",
+    to: "/planning",
+    label: "Planning",
+    icon: "/icons/Blancs/calendar.png",
     isPublicIcon: true,
   },
   {

@@ -174,15 +174,15 @@ init();
                   <td class="whitespace-nowrap px-3 py-5 text-sm">
                     <a
                       :href="`/#/users/update/${person._id}`"
-                      class="text-black-300 hover:text-green-800"
-                      >Modifier
+                      class="text-black-300 hover:text-green-800 mr-2"
+                      ><font-awesome-icon :icon="['fas', 'edit']" />
                     </a>
                     <a
-                      class="text-red-600 hover:text-red-800"
+                      class="text-red-600 hover:text-red-800 cursor-pointer"
                       @click="deleteUser(person._id)"
                     >
-                      Supprimer</a
-                    >
+                      <font-awesome-icon :icon="['fas', 'trash-alt']"
+                    /></a>
                   </td>
                 </tr>
               </tbody>
