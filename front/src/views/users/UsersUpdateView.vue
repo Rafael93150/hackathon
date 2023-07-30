@@ -24,6 +24,7 @@ const state = reactive({
     address: "",
     companies: [],
     skills: [],
+    points: null,
   },
   companies: [],
   responseMessage: "",
@@ -120,6 +121,16 @@ init();
               v-model="state.user.skills"
               :options="languages"
               multiple
+            />
+          </FormField>
+
+          <FormField label="Points" help="Ajouter des points (max 1000)">
+            <FormControl
+                v-model="state.user.points"
+                :icon="mdiAccount"
+                name="points"
+                required
+                autocomplete="points"
             />
           </FormField>
 
