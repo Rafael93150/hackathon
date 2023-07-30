@@ -8,6 +8,7 @@ import { reactive } from "vue";
 import BaseButton from "@/components/BaseButton.vue";
 import router from "@/router";
 import { showToast } from "@/utils/toast";
+import { EyeIcon } from '@heroicons/vue/20/solid'
 
 const state = reactive({
   users: [],
@@ -195,10 +196,10 @@ init();
                       connectedUser.role === 'rh' ||
                       connectedUser.role === 'admin'
                     "
-                    class="whitespace-nowrap px-3 py-5 text-sm"
+                    class="flex flex-1 justify-center space-x-2 items-center whitespace-nowrap text-sm mt-5"
                   >
                     <button
-                      class="text-black-300 hover:text-green-800 mr-2 cursor-pointer"
+                      class="text-black-300 hover:text-green-800 cursor-pointer"
                       @click="
                         () =>
                           router.push({
@@ -207,15 +208,11 @@ init();
                           })
                       "
                     >
-                      <img
-                        src="/icons/Verts/show.png"
-                        alt="show"
-                        class="h-4 w-4 mt-1"
-                      />
+                      <EyeIcon class="h-4 w-4" />
                     </button>
                     <a
                       :href="`/#/users/update/${person._id}`"
-                      class="text-black-300 hover:text-green-800 mr-2 cursor-pointer"
+                      class="text-black-300 hover:text-green-800 cursor-pointer "
                       ><font-awesome-icon :icon="['fas', 'edit']" />
                     </a>
                     <a
