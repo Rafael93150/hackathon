@@ -113,6 +113,12 @@ init();
                     scope="col"
                     class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
+                    Points
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                  >
                     Rôle
                   </th>
                   <th
@@ -163,14 +169,32 @@ init();
                     class="whitespace-nowrap px-3 py-5 text-sm text-gray-500 text-center"
                   >
                     <img
-                      class="h-12 w-12 mr-auto ml-auto"
+                      class="h-12 w-12"
                       :src="`/levels/level-${person.level}.png`"
                       alt="level"
                     />
                   </td>
+                  <td class="whitespace-nowrap px-3 py-5">
+    <div class="relative h-6 w-full bg-gray-300 rounded-md overflow-hidden">
+      <div
+        class="absolute top-0 left-0 h-full bg-green-400 rounded-md z-neg-1"
+        :style="{ width: `${(person.points / 1000) * 100}%` }"
+      ></div>
+      <div class="text-gray-900 text-center relative z-10">
+        {{ person.points }} / 1000
+      </div>
+    </div>
+  </td>
                   <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                    {{ person.role }}
+                    {{
+                      person.role === "admin"
+                        ? "Administrateur"
+                        : person.role === "employee"
+                        ? "Employé"
+                        : "R. Humaines"
+                    }}
                   </td>
+
                   <td class="whitespace-nowrap px-3 py-5 text-sm">
                     <a
                       :href="`/#/users/update/${person._id}`"
