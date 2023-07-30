@@ -24,14 +24,17 @@ const state = reactive({
   },
 });
 
+const connectedUser = JSON.parse(localStorage.getItem("user"));
 
 const createUser = async () => {
-    axiosInstance.post("users", state.newUser).then((response) => {
-    showToast(response.data.message);
-    window.location.href = "#/users";
-    }).catch ((error) => {
-    console.error("Erreur lors de la création de l'utilisateur:", error);
+    if(connectedUser.role === 'rh' || connectedUser.role === 'admin'){
+      axiosInstance.post("users", state.newUser).then((response) => {
+        showToast(response.data.message);
+        window.location.href = "#/users";
+      }).catch ((error) => {
+        console.error("Erreur lors de la création de l'utilisateur:", error);
     });
+    }  
 };
 
 

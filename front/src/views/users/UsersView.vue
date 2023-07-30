@@ -18,6 +18,9 @@ const init = async () => {
   await fetchCompanies();
 };
 
+const connectedUser = JSON.parse(localStorage.getItem("user"));
+
+
 const fetchUsers = async () => {
   try {
     state.users = await axiosInstance.get("users").then((response) => {
@@ -73,6 +76,7 @@ init();
         main
       >
         <BaseButton
+          v-if="connectedUser.role === 'rh' || connectedUser.role === 'admin'"
           href="/#/users/create"
           :icon="mdiPlus"
           label="Ajouter un utilisateur"
@@ -121,9 +125,10 @@ init();
                   >
                     Rôle
                   </th>
-                  <th
+                  <th                    
                     scope="col"
                     class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    v-if="connectedUser.role === 'rh' || connectedUser.role === 'admin'"
                   >
                     Actions
                   </th>
@@ -196,8 +201,7 @@ init();
                         : "R. Humaines"
                     }}
                   </td>
-
-                  <td class="whitespace-nowrap px-3 py-5 text-sm">
+                  <td v-if="connectedUser.role === 'rh' || connectedUser.role === 'admin'" class="whitespace-nowrap px-3 py-5 text-sm">
                     <a
                       :href="`/#/users/update/${person._id}`"
                       class="text-black-300 hover:text-green-800 mr-2"
@@ -205,7 +209,7 @@ init();
                     </a>
                     <a
                       class="text-red-600 hover:text-red-800 cursor-pointer"
-                      @click="deleteUser(person._id)"
+                      @click="deleteUser(person._id)" 
                     >
                       <font-awesome-icon :icon="['fas', 'trash-alt']"
                     /></a>
