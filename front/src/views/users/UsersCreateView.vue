@@ -128,7 +128,12 @@ const createUser = async () => {
         <!-- Autres champs du formulaire ici -->
         <template #footer>
             <BaseButtons>
-              <BaseButton class="button" color="info" type="submit" label="Créer" />
+              <button
+                  type="submit"
+                  class="rounded-full bg-[#00BB7E] px-4 py-2.5 text-sm font-semibold text-white shadow-sm"
+              >
+                Ajouter un utilisateur
+              </button>
             </BaseButtons>
           </template>
 

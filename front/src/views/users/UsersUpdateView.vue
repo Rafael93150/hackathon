@@ -161,12 +161,12 @@ init();
           <!-- Autres champs du formulaire ici -->
           <template #footer>
             <BaseButtons>
-              <BaseButton
-                class="button"
-                color="info"
-                type="submit"
-                label="Modifier"
-              />
+              <button
+                  type="submit"
+                  class="rounded-full bg-[#00BB7E] px-4 py-2.5 text-sm font-semibold text-white shadow-sm"
+              >
+                Modifier l'utilisateur
+              </button>
             </BaseButtons>
           </template>
         </CardBox>
