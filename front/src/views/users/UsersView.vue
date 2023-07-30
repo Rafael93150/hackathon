@@ -8,7 +8,7 @@ import { reactive } from "vue";
 import BaseButton from "@/components/BaseButton.vue";
 import router from "@/router";
 import { showToast } from "@/utils/toast";
-import { EyeIcon } from '@heroicons/vue/20/solid'
+import { EyeIcon } from "@heroicons/vue/20/solid";
 
 const state = reactive({
   users: [],
@@ -212,7 +212,7 @@ init();
                     </button>
                     <a
                       :href="`/#/users/update/${person._id}`"
-                      class="text-black-300 hover:text-green-800 cursor-pointer "
+                      class="text-black-300 hover:text-green-800 cursor-pointer"
                       ><font-awesome-icon :icon="['fas', 'edit']" />
                     </a>
                     <a
