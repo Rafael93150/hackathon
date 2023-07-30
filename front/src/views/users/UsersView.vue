@@ -11,14 +11,26 @@ import { showToast } from "@/utils/toast";
 
 const state = reactive({
   users: [],
+  companies: [],
 });
 const init = async () => {
   await fetchUsers();
+  await fetchCompanies();
 };
 
 const fetchUsers = async () => {
   try {
     state.users = await axiosInstance.get("users").then((response) => {
+      return response.data;
+    });
+  } catch (error) {
+    console.error("Error fetching users:", error);
+  }
+};
+
+const fetchCompanies = async () => {
+  try {
+    state.companies = await axiosInstance.get("companies").then((response) => {
       return response.data;
     });
   } catch (error) {
@@ -40,6 +52,14 @@ const deleteUser = async (userId) => {
       console.error("Erreur lors de la suppression de l'utilisateur:", error);
     }
   }
+};
+
+const getCompanyName = (companyId) => {
+  state.companies.filter((company) => {
+    if (company._id === companyId) {
+      return company.name;
+    }
+  });
 };
 
 init();
@@ -137,7 +157,7 @@ init();
                   </td>
                   <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                     <div class="text-gray-900">{{ person.title }}</div>
-                    <div class="mt-1 text-gray-500">Google</div>
+                    <div class="mt-1 text-gray-500">{{ getCompanyName(person.companies[0]) }}</div>
                   </td>
                   <td
                     class="whitespace-nowrap px-3 py-5 text-sm text-gray-500 text-center"

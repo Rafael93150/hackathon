@@ -32,3 +32,20 @@ SkillConnect Hub est une plateforme interne complète et innovante, conçue pour
 
   # Interface utilisateur :
        L'interface utilisateur de SkillConnect Carbon est conçue pour être agréable à utiliser, visuelle, et intuitive, respectant la charte graphique de l'entreprise tout en offrant une expérience utilisateur fluide.
+
+# Technologie utilisée :
+        Node JS, Vue JS 3, TailwindUi, MongoDB, Express, Socket.io, Youtube API, Google Calendar API
+
+# Installation :
+    git clone
+    cd skillconnect-carbon
+
+    # install dependencies for backend
+    cd backend && npm install
+    npm run dev,
+
+    # install dependencies for frontend
+    cd frontend && npm install
+    npm run dev
+
+    

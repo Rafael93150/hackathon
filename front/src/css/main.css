@@ -6,3 +6,13 @@
 @import "_progress.css";
 @import "_scrollbars.css";
 @import "_table.css";
+
+.hidescrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.hidescrollbar::-webkit-scrollbar {
+    display: none;
+}
+

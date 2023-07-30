@@ -13,7 +13,8 @@ import {
 import axiosInstance from "@/utils/axiosInstance";
 import { reactive } from "vue";
 import { MagnifyingGlassIcon } from "@heroicons/vue/20/solid";
-import { onMounted } from 'vue';
+import { onMounted } from "vue";
+import { languages } from "@/data/languages";
 
 const state = reactive({
   trainings: [],
@@ -21,29 +22,40 @@ const state = reactive({
   openModal: false,
   search: "",
 });
+
+const colors = [
+  "bg-yellow-100 text-yellow-700",
+  "bg-red-100 text-red-700",
+  "bg-green-100 text-green-700",
+  "bg-blue-100 text-blue-700",
+  "bg-indigo-100 text-indigo-700",
+  "bg-purple-100 text-purple-700",
+  "bg-pink-100 text-pink-700",
+];
+
 const init = async () => {
   await fetchTraining();
 };
 
 onMounted(() => {
-    initSearch();
+  initSearch();
 });
 
 const initSearch = async () => {
-    try {
-      // Effectuer la recherche avec le terme "JavaScript" par défaut
-      state.trainings = await axiosInstance
-        .get("/training/search", {
-          params: {
-            search_query: "NodeJs",
-          },
-        })
-        .then((response) => {
-          return response.data;
-        });
-    } catch (error) {
-      console.error("Error fetching Trainings:", error);
-    }
+  try {
+    // Effectuer la recherche avec le terme "JavaScript" par défaut
+    state.trainings = await axiosInstance
+      .get("/training/search", {
+        params: {
+          search_query: "NodeJs",
+        },
+      })
+      .then((response) => {
+        return response.data;
+      });
+  } catch (error) {
+    console.error("Error fetching Trainings:", error);
+  }
 };
 
 const selectVideo = (video) => {
@@ -83,12 +95,21 @@ const submit = async () => {
   }
 };
 
+const getRandomColorClass = () => {
+  const randomIndex = Math.floor(Math.random() * colors.length);
+  return colors[randomIndex];
+};
+
 init();
 </script>
 <template>
   <LayoutAuthenticated>
     <SectionMain>
-      <SectionTitleLineWithButton :icon="mdiCertificate" title="Formations  " main>
+      <SectionTitleLineWithButton
+        :icon="mdiCertificate"
+        title="Formations  "
+        main
+      >
         <form @submit.prevent="submit">
           <div>
             <label
@@ -126,6 +147,17 @@ init();
           </div>
         </form>
       </SectionTitleLineWithButton>
+      <ul class="flex overflow-auto space-x-2 hidescrollbar">
+        <li
+          v-for="skill in languages"
+          :key="skill"
+          :class="getRandomColorClass()"
+          class="h-fit inline-flex items-center rounded-full px-4 py-1 text-sm cursor-pointer"
+          @click="(state.search = skill) , submit()"
+        >
+          {{ skill }}
+        </li>
+      </ul>
       <div
         class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-4"
       >

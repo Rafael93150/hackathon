@@ -24,7 +24,6 @@ const fetchCompanies = async () => {
     state.companies = await axiosInstance
       .get("users/" + router.currentRoute.value.params.id + "/companies")
       .then((response) => {
-        console.log(response.data);
         return response.data;
       });
   } catch (error) {
