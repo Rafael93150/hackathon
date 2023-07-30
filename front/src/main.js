@@ -3,12 +3,12 @@ import { createPinia } from "pinia";
 
 import App from "./App.vue";
 import router from "./router";
-import { useMainStore } from "@/stores/main.js";
 import { useStyleStore } from "@/stores/style.js";
-import { darkModeKey, styleKey } from "@/config.js";
+import { darkModeKey } from "@/config.js";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import vSelect from "vue-select";
 
 import "./css/main.css";
 
@@ -20,6 +20,7 @@ const app = createApp(App);
 app.use(router);
 app.use(pinia);
 app.mount("#app");
+app.component("VSelect", vSelect);
 
 library.add(faEdit, faTrashAlt);
 app.component("FontAwesomeIcon", FontAwesomeIcon);

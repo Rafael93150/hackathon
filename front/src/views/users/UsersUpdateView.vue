@@ -8,31 +8,71 @@ import BaseButton from "@/components/BaseButton.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
 import SectionTitleLineWithButton from "@/components/SectionTitleLineWithButton.vue";
-import { mdiAccount, mdiMail, mdiAsterisk, mdiAccountPlusOutline } from "@mdi/js";
+import { mdiAccount, mdiAccountPlusOutline, mdiMail } from "@mdi/js";
+import router from "@/router";
 import axiosInstance from "@/utils/axiosInstance";
+import "vue-select/dist/vue-select.css";
+import { languages } from "@/data/languages";
 import { showToast } from "@/utils/toast";
 
+const userId = router.currentRoute.value.params.userId;
 const state = reactive({
-  newUser : {
+  user: {
     firstname: "",
     lastname: "",
     email: "",
     phone: "",
     address: "",
+    companies: [],
     skills: [],
-    password: ""
   },
-  responseMessage: ""
+  companies: [],
+  responseMessage: "",
 });
 
-const route = useRoute();
-const userId = route.query.userId; // Access the userId query parameter
-
-
-const updateUser = async () => {
-
+const init = async () => {
+  await fetchUser();
+  await fetchCompanies();
 };
 
+const fetchCompanies = async () => {
+  try {
+    state.companies = await axiosInstance.get("companies").then((response) => {
+      return response.data;
+    });
+  } catch (error) {
+    console.error("Error fetching companies:", error);
+  }
+};
+
+const fetchUser = async () => {
+  try {
+    state.user = await axiosInstance.get(`users/${userId}`).then((response) => {
+      return response.data;
+    });
+  } catch (error) {
+    console.error("Error fetching user:", error);
+  }
+};
+
+const updateUser = async () => {
+  try {
+    await axiosInstance
+      .put(`users/${userId}`, state.user)
+      .then((response) => {
+        state.responseMessage = response.data.message;
+        setTimeout(() => {
+          showToast(state.responseMessage);
+        }, 3000);
+        router.push("/users");
+      });
+  } catch (error) {
+    showToast(error);
+    console.error("Error updating user:", error);
+  }
+};
+
+init();
 </script>
 
 <template>
@@ -45,11 +85,11 @@ const updateUser = async () => {
       />
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 form-container">
-      <!-- Formulaire de création d'utilisateur -->
-      <CardBox is-form @submit.prevent="updateUser" class="shadow">
+        <!-- Formulaire de création d'utilisateur -->
+        <CardBox is-form class="shadow" @submit.prevent="updateUser">
           <FormField label="Nom" help="Votre nom">
             <FormControl
-              v-model="state.newUser.firstname"
+              v-model="state.user.firstname"
               :icon="mdiAccount"
               name="username"
               required
@@ -59,7 +99,7 @@ const updateUser = async () => {
 
           <FormField label="Prénom" help="Votre prénom">
             <FormControl
-              v-model="state.newUser.lastname"
+              v-model="state.user.lastname"
               :icon="mdiAccount"
               name="username"
               required
@@ -67,19 +107,26 @@ const updateUser = async () => {
             />
           </FormField>
 
+          <FormField label="Entreprise" help="Sélectionnez votre entreprise">
+            <v-select
+              v-model="state.user.companies"
+              :options="state.companies"
+              :reduce="(company) => company._id"
+              label="name"
+            />
+          </FormField>
+
           <FormField label="Compétences" help="Vos compétences">
-            <FormControl
-              v-model="state.newUser.skills"
-              :icon="mdiAccount"
-              name="skills"
-              required
-              autocomplete="skills"
+            <v-select
+              v-model="state.user.skills"
+              :options="languages"
+              multiple
             />
           </FormField>
 
           <FormField label="Adresse" help="Votre adresse postale">
             <FormControl
-              v-model="state.newUser.address"
+              v-model="state.user.address"
               :icon="mdiAccount"
               name="address"
               required
@@ -89,7 +136,7 @@ const updateUser = async () => {
 
           <FormField label="Email" help="Votre adresse email">
             <FormControl
-              v-model="state.newUser.email"
+              v-model="state.user.email"
               :icon="mdiMail"
               name="email"
               type="email"
@@ -98,9 +145,12 @@ const updateUser = async () => {
             />
           </FormField>
 
-          <FormField label="Numéro de téléphone" help="Votre numéro de téléphone">
+          <FormField
+            label="Numéro de téléphone"
+            help="Votre numéro de téléphone"
+          >
             <FormControl
-              v-model="state.newUser.phone"
+              v-model="state.user.phone"
               :icon="mdiAccount"
               name="tel"
               type="tel"
@@ -108,50 +158,42 @@ const updateUser = async () => {
               autocomplete="tel"
             />
           </FormField>
-
-          <FormField label="Mot de passe" help="Votre Mot de passe">
-            <FormControl
-              v-model="state.newUser.password"
-              :icon="mdiAsterisk"
-              name="password"
-              type="password"
-              required
-              autocomplete="password"
-            />
-          </FormField>
-
-        <!-- Autres champs du formulaire ici -->
-        <template #footer>
+          <!-- Autres champs du formulaire ici -->
+          <template #footer>
             <BaseButtons>
-              <BaseButton class="button" color="info" type="submit" label="Modifier" />
+              <BaseButton
+                class="button"
+                color="info"
+                type="submit"
+                label="Modifier"
+              />
             </BaseButtons>
           </template>
-
-      </CardBox>
+        </CardBox>
       </div>
     </SectionMain>
   </LayoutAuthenticated>
 </template>
 
 <style>
-  .form-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100% ; 
-    width: auto;
-  }
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: auto;
+}
 
-  .form-container .shadow {
-    max-width: 500px; /* Adjust this value as needed to control the maximum width of the form */
-    width: 100%; /* Ensure the form takes the available width within the container */
-  }
+.form-container .shadow {
+  max-width: 500px; /* Adjust this value as needed to control the maximum width of the form */
+  width: 100%; /* Ensure the form takes the available width within the container */
+}
 
-  .button{
-    width: 300px;
-    justify-content: center;
-    align-items: center;
-    background-color: #d62020;
-    margin-left: 50px;
-  }
+.button {
+  width: 300px;
+  justify-content: center;
+  align-items: center;
+  background-color: #d62020;
+  margin-left: 50px;
+}
 </style>

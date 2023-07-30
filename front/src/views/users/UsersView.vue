@@ -7,6 +7,7 @@ import axiosInstance from "@/utils/axiosInstance";
 import { reactive } from "vue";
 import BaseButton from "@/components/BaseButton.vue";
 import router from "@/router";
+import { showToast } from "@/utils/toast";
 
 const state = reactive({
   users: [],
@@ -34,7 +35,7 @@ const deleteUser = async (userId) => {
     try {
       const response = await axiosInstance.delete(`users/${userId}`);
       showToast(response.data.message);
-      fetchUsers();
+      await fetchUsers();
     } catch (error) {
       console.error("Erreur lors de la suppression de l'utilisateur:", error);
     }
@@ -70,11 +71,36 @@ init();
             <table class="min-w-full divide-y divide-gray-300">
               <thead>
                 <tr>
-                  <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Informations personelles</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Entreprise actuelle</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Niveau</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Rôle</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Actions</th>
+                  <th
+                    scope="col"
+                    class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                  >
+                    Informations personelles
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                  >
+                    Entreprise actuelle
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                  >
+                    Niveau
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                  >
+                    Rôle
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                  >
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-200 bg-white">
@@ -113,7 +139,9 @@ init();
                     <div class="text-gray-900">{{ person.title }}</div>
                     <div class="mt-1 text-gray-500">Google</div>
                   </td>
-                  <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500 text-center">
+                  <td
+                    class="whitespace-nowrap px-3 py-5 text-sm text-gray-500 text-center"
+                  >
                     <img
                       class="h-12 w-12 mr-auto ml-auto"
                       :src="`/levels/level-${person.level}.png`"
@@ -125,22 +153,23 @@ init();
                   </td>
                   <td class="whitespace-nowrap px-3 py-5 text-sm">
                     <a
-                      :href="`/users/update/${person._id}`"
+                      :href="`/#/users/update/${person._id}`"
                       class="text-black-300 hover:text-green-800"
-                      >Modifier </a
-                    >
+                      >Modifier
+                    </a>
                     <a
                       class="text-red-600 hover:text-red-800"
                       @click="deleteUser(person._id)"
-                      > Supprimer</a
+                    >
+                      Supprimer</a
                     >
                   </td>
                 </tr>
               </tbody>
             </table>
-            </div>
           </div>
         </div>
-      </SectionMain>
-    </LayoutAuthenticated>
-  </template>
+      </div>
+    </SectionMain>
+  </LayoutAuthenticated>
+</template>

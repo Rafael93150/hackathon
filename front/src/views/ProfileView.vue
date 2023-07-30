@@ -22,13 +22,13 @@ import { useMainStore } from "@/stores/main";
 import { showToast } from "@/utils/toast";
 
 const state = reactive({
-  profile : {
+  profile: {
     firstname: "",
     lastname: "",
     email: "",
     picture: "",
   },
-  passwordForm : {
+  passwordForm: {
     password_current: "",
     password: "",
     password_confirmation: "",
@@ -38,41 +38,44 @@ const state = reactive({
 
 const connectedUser = JSON.parse(localStorage.getItem("user"));
 
-axiosInstance.get("/users/" + connectedUser._id ).then((response) => {
+axiosInstance.get("/users/" + connectedUser._id).then((response) => {
   localStorage.setItem("user", JSON.stringify(response.data));
   state.profile = {
-    firstname: response.data.firstname, 
-    lastname: response.data.lastname, 
+    firstname: response.data.firstname,
+    lastname: response.data.lastname,
     email: response.data.email,
-    picture: response.data.picture
+    picture: response.data.picture,
   };
 });
 
 // change localStorage user.companies ids to names
-axiosInstance.get("/users/" + connectedUser._id + "/companies").then((response) => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  const companyNames = response.data.reduce((acc, company) => {
-    acc[company._id] = company.name;
-    return acc;
-  }, {});
+axiosInstance
+  .get("/users/" + connectedUser._id + "/companies")
+  .then((response) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const companyNames = response.data.reduce((acc, company) => {
+      acc[company._id] = company.name;
+      return acc;
+    }, {});
 
-  user.companies = user.companies.map((companyId) => companyNames[companyId]);
-  localStorage.setItem("user", JSON.stringify(user));
-});
+    user.companies = user.companies.map((companyId) => companyNames[companyId]);
+    localStorage.setItem("user", JSON.stringify(user));
+  });
 
 const submitProfile = () => {
   try {
-    axiosInstance.put("/users/" +  connectedUser._id  , state.profile).then((response) => {
-      if (response.data.user){
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-        useMainStore().setUser(state.profile);
-      }
-      state.response = response;
-      showToast(state.response.data.message);
-    });
-  }
-  catch (error) {
-    state.response = response
+    axiosInstance
+      .put("/users/" + connectedUser._id, state.profile)
+      .then((response) => {
+        if (response.data.user) {
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+          useMainStore().setUser(state.profile);
+        }
+        state.response = response;
+        showToast(state.response.data.message);
+      });
+  } catch (error) {
+    state.response = error;
     showToast(state.response.data.message);
   }
 };
@@ -90,7 +93,7 @@ const submitPass = () => {
       <UserCard class="mb-6 shadow" />
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <CardBox is-form @submit.prevent="submitProfile" class="shadow">
+        <CardBox is-form class="shadow" @submit.prevent="submitProfile">
           <!-- <span v-if="state.response" :class="`${state.response.status !== 200 ? 'text-red-600' : 'text-blue-500'} text-lg text-center`">
             {{ state.response.data.message }}
           </span>  -->
@@ -134,7 +137,7 @@ const submitPass = () => {
           </template>
         </CardBox>
 
-        <CardBox is-form @submit.prevent="submitPass" class="shadow">
+        <CardBox is-form class="shadow" @submit.prevent="submitPass">
           <FormField
             label="Mot de passe actuel"
             help="Votre mot de passe actuel"
@@ -151,7 +154,10 @@ const submitPass = () => {
 
           <BaseDivider />
 
-          <FormField label="Nouveau mot de passe" help="Votre nouveau mot de passe">
+          <FormField
+            label="Nouveau mot de passe"
+            help="Votre nouveau mot de passe"
+          >
             <FormControl
               v-model="state.passwordForm.password"
               :icon="mdiFormTextboxPassword"
