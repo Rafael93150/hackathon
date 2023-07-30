@@ -1,7 +1,7 @@
 import {google} from "googleapis";
 
 
-const key = "AIzaSyDp9HkUHwBb45YoN1GBH7Sy7nLz_lMcEhk";
+const key = "AIzaSyCx04qgNh6RyzphcWq8zFXHc--6h_ALpH0";
 
 const youtube = google.youtube({
   version: "v3",
