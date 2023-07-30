@@ -17,7 +17,10 @@
     ></div>
     <div>
       <span class="chat-message-sender"
-        >{{ message.fromUser ? message.fromUser.firstname : 'Compte supprimé' }} {{ message.fromUser?.lastname }}
+        >{{
+          message.fromUser ? message.fromUser.firstname : "Compte supprimé"
+        }}
+        {{ message.fromUser?.lastname }}
         <small class="chat-message-date">{{
           formatDate(message.createdAt)
         }}</small></span
@@ -29,12 +32,13 @@
       v-if="showDropdown && (isCurrentUserMessage() || isCurrentUserAdmin())"
       class="dropdown shadow"
     >
-      <button @click="editMessage" class="dropdown-item mr-1">
+      <button @click="editMessage" class="dropdown-item mr-1" title="Modifier le message">
         <font-awesome-icon :icon="['fas', 'edit']" />
       </button>
       <button
         @click="deleteMessage(message._id)"
-        class="dropdown-item text-red-400"
+        class="dropdown-item text-red-400 mr-1"
+        title="Supprimer le message"
       >
         <font-awesome-icon :icon="['fas', 'trash-alt']" />
       </button>
@@ -42,8 +46,9 @@
         v-if="isCurrentUserAdmin()"
         @click="addPoints(message._id, 100)"
         class="dropdown-item"
+        title="Ajouter des points"
       >
-        Points
+        <font-awesome-icon :icon="['fas', 'circle-check']" />
       </button>
     </div>
   </div>
@@ -63,6 +68,7 @@ import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { faStar } from "@fortawesome/free-regular-svg-icons";
 import { ref } from "vue";
 import { useMainStore } from "@/stores/main";
+import { showToast } from "@/utils/toast";
 
 library.add(faCheckCircle, faStar);
 const mainStore = useMainStore();
@@ -102,7 +108,7 @@ export default {
       return this.message.fromUser?._id === mainStore.currentUser?._id;
     },
     isCurrentUserAdmin() {
-      return mainStore.currentUser.role === "admin";
+      return mainStore.currentUser.role === "admin"  || mainStore.currentUser.role === "rh";
     },
     deleteMessage() {
       this.$emit("delete-message", this.message._id);
@@ -113,6 +119,7 @@ export default {
     },
     addPoints(messageId, pointsToAdd) {
       this.$emit("add-points", messageId, pointsToAdd);
+      showToast(`${pointsToAdd} ajoutés à ${this.message.fromUser.firstname}`);
     },
     saveEditedMessage() {
       this.$emit("edit-message", this.message._id, this.editedMessageText);

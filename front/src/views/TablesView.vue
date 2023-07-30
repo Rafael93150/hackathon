@@ -7,6 +7,7 @@ import axiosInstance from "@/utils/axiosInstance";
 import { onMounted, reactive } from "vue";
 import { useMainStore } from "@/stores/main";
 import io from "socket.io-client";
+import { showToast } from "@/utils/toast";
 
 const mainStore = useMainStore();
 const socket = io("http://localhost:3000");
@@ -65,6 +66,7 @@ onMounted(() => {
     state.messages = state.messages.filter(
       (message) => message._id.toString() !== messageId.toString()
     );
+    showToast("Message supprimé avec succès")
   });
   socket.on("editMessage", (messageId, newText) => {
     state.messages = state.messages.map((message) => {
