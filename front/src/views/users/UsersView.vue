@@ -117,17 +117,7 @@ init();
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-200 bg-white">
-                <tr
-                  v-for="person in state.users"
-                  :key="person._id"
-                  @click="
-                    () =>
-                      router.push({
-                        name: 'userDetail',
-                        params: { id: person._id },
-                      })
-                  "
-                >
+                <tr v-for="person in state.users" :key="person._id">
                   <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                     <div class="flex items-center">
                       <div class="h-11 w-11 flex-shrink-0">
@@ -199,6 +189,7 @@ init();
                         : "R. Humaines"
                     }}
                   </td>
+
                   <td
                     v-if="
                       connectedUser.role === 'rh' ||
@@ -206,9 +197,25 @@ init();
                     "
                     class="whitespace-nowrap px-3 py-5 text-sm"
                   >
+                    <button
+                      class="text-black-300 hover:text-green-800 mr-2 cursor-pointer"
+                      @click="
+                        () =>
+                          router.push({
+                            name: 'userDetail',
+                            params: { id: person._id },
+                          })
+                      "
+                    >
+                      <img
+                        src="/icons/Verts/show.png"
+                        alt="show"
+                        class="h-4 w-4 mt-1"
+                      />
+                    </button>
                     <a
                       :href="`/#/users/update/${person._id}`"
-                      class="text-black-300 hover:text-green-800 mr-2"
+                      class="text-black-300 hover:text-green-800 mr-2 cursor-pointer"
                       ><font-awesome-icon :icon="['fas', 'edit']" />
                     </a>
                     <a
