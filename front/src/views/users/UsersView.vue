@@ -11,30 +11,16 @@ import { showToast } from "@/utils/toast";
 
 const state = reactive({
   users: [],
-  companies: [],
 });
 const init = async () => {
   await fetchUsers();
-  await fetchCompanies();
 };
 
 const connectedUser = JSON.parse(localStorage.getItem("user"));
 
-
 const fetchUsers = async () => {
   try {
     state.users = await axiosInstance.get("users").then((response) => {
-      console.log(response.data)
-      return response.data;
-    });
-  } catch (error) {
-    console.error("Error fetching users:", error);
-  }
-};
-
-const fetchCompanies = async () => {
-  try {
-    state.companies = await axiosInstance.get("companies").then((response) => {
       return response.data;
     });
   } catch (error) {
@@ -56,14 +42,6 @@ const deleteUser = async (userId) => {
       console.error("Erreur lors de la suppression de l'utilisateur:", error);
     }
   }
-};
-
-const getCompanyName = (companyId) => {
-  state.companies.filter((company) => {
-    if (company._id === companyId) {
-      return company.name;
-    }
-  });
 };
 
 init();
@@ -100,7 +78,7 @@ init();
                     scope="col"
                     class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
                   >
-                    Informations personelles
+                    Informations personnel
                   </th>
                   <th
                     scope="col"
@@ -126,10 +104,13 @@ init();
                   >
                     Rôle
                   </th>
-                  <th                    
+                  <th
+                    v-if="
+                      connectedUser.role === 'rh' ||
+                      connectedUser.role === 'admin'
+                    "
                     scope="col"
                     class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    v-if="connectedUser.role === 'rh' || connectedUser.role === 'admin'"
                   >
                     Actions
                   </th>
@@ -170,7 +151,7 @@ init();
                   <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                     <div class="text-gray-900">{{ person.title }}</div>
                     <div class="mt-1 text-gray-500">
-                      {{ getCompanyName(person.companies[0]) }}
+                      {{ person.companies[0]?.name }}
                     </div>
                   </td>
                   <td
@@ -218,7 +199,13 @@ init();
                         : "R. Humaines"
                     }}
                   </td>
-                  <td v-if="connectedUser.role === 'rh' || connectedUser.role === 'admin'" class="whitespace-nowrap px-3 py-5 text-sm">
+                  <td
+                    v-if="
+                      connectedUser.role === 'rh' ||
+                      connectedUser.role === 'admin'
+                    "
+                    class="whitespace-nowrap px-3 py-5 text-sm"
+                  >
                     <a
                       :href="`/#/users/update/${person._id}`"
                       class="text-black-300 hover:text-green-800 mr-2"
@@ -226,7 +213,7 @@ init();
                     </a>
                     <a
                       class="text-red-600 hover:text-red-800 cursor-pointer"
-                      @click="deleteUser(person._id)" 
+                      @click="deleteUser(person._id)"
                     >
                       <font-awesome-icon :icon="['fas', 'trash-alt']"
                     /></a>
