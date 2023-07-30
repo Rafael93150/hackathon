@@ -6,7 +6,7 @@ import { Types } from "mongoose";
 export const getUser = async (req, res) => {
     try {
         const userId = req.params.userId;
-        const user = await User.findById(userId);
+        const user = await User.findById(userId).select('-password');
         if (!user) throw new Error("L'utilisateur n'existe pas");
         res.json(user);
     } catch (error) {
@@ -32,7 +32,7 @@ export const getUsers = async (req, res) => {
             }
         }
 
-        const users = await User.find(userQuery);
+        const users = await User.find(userQuery).select("-password");
         res.json(users);
     } catch (err) {
         res.status(500).json({
@@ -130,7 +130,7 @@ export const updateUser = async (req, res) => {
         if (companies) userQuery.companies = companies;
 
         await User.findByIdAndUpdate(userId, userQuery);
-        const updatedUser = await User.findById(userId);
+        const updatedUser = await User.findById(userId).select("-password");
 
         res.json({
             message: "Le profil a bien été modifié",
@@ -175,7 +175,7 @@ export const addCompanyToUser = async (req, res) => {
                 $addToSet: { companies: new Types.ObjectId(companyId) },
             },
             { new: true }
-        );
+        ).select("-password");
 
         res.json({
             message: "L'entreprise a bien été ajoutée",
