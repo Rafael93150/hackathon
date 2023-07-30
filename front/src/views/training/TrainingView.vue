@@ -37,6 +37,8 @@ const init = async () => {
   await fetchTraining();
 };
 
+const connectedUser = JSON.parse(localStorage.getItem("user"));
+
 onMounted(() => {
   initSearch();
 });
@@ -79,12 +81,13 @@ const fetchTraining = async () => {
   }
 };
 
+
 const submit = async () => {
   try {
     state.trainings = await axiosInstance
       .get("/training/search", {
         params: {
-          search_query: state.search,
+          search_query: connectedUser.skills[0],
         },
       })
       .then((response) => {

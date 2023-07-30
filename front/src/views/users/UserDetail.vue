@@ -19,6 +19,8 @@ const init = async () => {
   await fetchCompanies();
 };
 
+const connectedUser = JSON.parse(localStorage.getItem("user"));
+
 const fetchCompanies = async () => {
   try {
     state.companies = await axiosInstance
@@ -50,6 +52,7 @@ init();
         :icon="mdiChartTimelineVariant"
         title="Détails de l'utilisateur"
         main
+        v-if="connectedUser.role === 'rh' || connectedUser.role === 'admin'"
       >
         <BaseButton
           :href="'/#/users/' + router.currentRoute.value.params.id + '/edit'"

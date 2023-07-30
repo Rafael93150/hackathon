@@ -41,7 +41,6 @@ const init = async () => {
 };
 
 const connectedUser = JSON.parse(localStorage.getItem("user"));
-console.log("connectedUser =============", connectedUser);
 
 const fetchEvents = async () => {
   try {
