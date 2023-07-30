@@ -50,7 +50,7 @@ init();
         >
           <div class="flex-shrink-0">
             <img
-              class="w-10 rounded-full"
+              class="h-10 rounded-full"
               :src="
                 company.logo ??
                 'https://www.freepnglogos.com/uploads/company-logo-png/company-logo-transparent-png-19.png'

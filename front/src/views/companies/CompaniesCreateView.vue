@@ -1,7 +1,7 @@
 <script setup>
 import axiosInstance from "@/utils/axiosInstance";
 import { showToast } from "@/utils/toast";
-import { reactive } from "vue"; 
+import { reactive } from "vue";
 import { mdiAccount, mdiMail, mdiChartTimelineVariant } from "@mdi/js";
 import SectionMain from "@/components/SectionMain.vue";
 import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
@@ -13,30 +13,28 @@ import BaseButtons from "@/components/BaseButtons.vue";
 import FormControl from "@/components/FormControl.vue";
 import FormFilePicker from "@/components/FormFilePicker.vue";
 
-
-
 const state = reactive({
-  newCompany : {
+  newCompany: {
     name: "",
     address: "",
     email: "",
     phone: "",
-    logo: null
+    logo: null,
   },
 });
 
-
 const createCompany = async () => {
   console.log(state.newCompany);
-    axiosInstance.post("companies", state.newCompany).then((response) => {
-    showToast(response.data.message);
-    window.location.href = "#/companies";
-    }).catch ((error) => {
-    console.error("Erreur lors de la création de l'entreprise:", error);
+  axiosInstance
+    .post("companies", state.newCompany)
+    .then((response) => {
+      showToast(response.data.message);
+      window.location.href = "#/companies";
+    })
+    .catch((error) => {
+      console.error("Erreur lors de la création de l'entreprise:", error);
     });
 };
-
-
 </script>
 <template>
   <LayoutAuthenticated>
@@ -47,11 +45,10 @@ const createCompany = async () => {
         main
       />
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 form-container">
-      <CardBox is-form @submit.prevent="createCompany" class="shadow">
-
-        <FormField label="Logo" help="Logo de la société">
-            <FormFilePicker :modelValue="state.newCompany.logo"  label="Logo"/>
-        </FormField>
+        <CardBox is-form class="shadow" @submit.prevent="createCompany">
+          <FormField label="Logo" help="Logo de la société">
+            <FormFilePicker :model-value="state.newCompany.logo" label="Logo" />
+          </FormField>
 
           <FormField label="Nom" help="Le nom de l'entreprise">
             <FormControl
@@ -84,7 +81,10 @@ const createCompany = async () => {
             />
           </FormField>
 
-          <FormField label="Numéro de téléphone" help="Numéro de téléphone de l'entreprise">
+          <FormField
+            label="Numéro de téléphone"
+            help="Numéro de téléphone de l'entreprise"
+          >
             <FormControl
               v-model="state.newCompany.phone"
               :icon="mdiAccount"
@@ -95,38 +95,42 @@ const createCompany = async () => {
             />
           </FormField>
 
-
-        <!-- Autres champs du formulaire ici -->
-        <template #footer>
-            <BaseButtons>
-              <BaseButton class="button" color="info" type="submit" label="Créer" />
+          <!-- Autres champs du formulaire ici -->
+          <template #footer>
+            <BaseButtons class="text-center">
+              <button
+                type="submit"
+                class="rounded-full bg-[#00BB7E] px-4 py-2.5 text-sm font-semibold text-white shadow-sm"
+              >
+                Ajouter une entreprise
+              </button>
             </BaseButtons>
           </template>
-      </CardBox>
+        </CardBox>
       </div>
     </SectionMain>
   </LayoutAuthenticated>
 </template>
 
 <style>
-  .form-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100% ; 
-    width: auto;
-  }
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: auto;
+}
 
-  .form-container .shadow {
-    max-width: 500px; /* Adjust this value as needed to control the maximum width of the form */
-    width: 100%; /* Ensure the form takes the available width within the container */
-  }
+.form-container .shadow {
+  max-width: 500px; /* Adjust this value as needed to control the maximum width of the form */
+  width: 100%; /* Ensure the form takes the available width within the container */
+}
 
-  .button{
-    width: 300px;
-    justify-content: center;
-    align-items: center;
-    background-color: #4be980;
-    margin-left: 50px;
-  }
+.button {
+  width: 300px;
+  justify-content: center;
+  align-items: center;
+  background-color: #4be980;
+  margin-left: 50px;
+}
 </style>

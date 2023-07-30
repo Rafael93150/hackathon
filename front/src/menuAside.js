@@ -32,7 +32,7 @@ export default [
     isPublicIcon: true,
   },
   {
-    to: "/tables",
+    to: "/chat",
     label: "Communauté",
     icon: "/icons/Blancs/community.png",
     isPublicIcon: true,

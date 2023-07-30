@@ -21,6 +21,7 @@ const init = async () => {
 const fetchUsers = async () => {
   try {
     state.users = await axiosInstance.get("users").then((response) => {
+      console.log(response.data)
       return response.data;
     });
   } catch (error) {
