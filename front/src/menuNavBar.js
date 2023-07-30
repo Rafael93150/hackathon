@@ -22,24 +22,20 @@ export default [
         to: "/profile",
       },
       {
-        icon: mdiCogOutline,
-        label: "Paramètres",
+        icon: mdiThemeLightDark,
+        label: "Mode clair/sombre",
+        isToggleLightDark: true,
+      },
+      {
+        icon: mdiLogout,
+        label: "Déconnexion",
+        isLogout: true,
       },
       {
         isDivider: true,
       },
     ],
   },
-  {
-    icon: mdiThemeLightDark,
-    label: "Light/Dark",
-    isDesktopNoLabel: true,
-    isToggleLightDark: true,
-  },
-  {
-    icon: mdiLogout,
-    label: "Log out",
-    isDesktopNoLabel: true,
-    isLogout: true,
-  },
+  
+  
 ];
