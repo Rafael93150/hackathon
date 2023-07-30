@@ -1,6 +1,11 @@
 # Projet SkillConnect Carbon - README
 Bienvenue dans le projet SkillConnect Carbon ! Ce document contient des informations essentielles sur le projet, y compris les comptes pré-créés, les fonctionnalités disponibles, et comment configurer le projet sur votre machine locale.
 
+Créé par
+- riadh-benchouche, alias Riadh Benchouche
+- asma1mokeddes, alias Asma Mokeddes
+- Rafael93150, alias Rafael Tavares
+
 ## Comptes pré-créés
 Pour faciliter les tests et la démonstration du projet, voici les comptes pré-créés avec leurs rôles respectifs et les mots de passe associés :
 
