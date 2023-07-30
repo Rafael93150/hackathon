@@ -40,6 +40,9 @@ const init = async () => {
   await fetchEvents();
 };
 
+const connectedUser = JSON.parse(localStorage.getItem("user"));
+console.log("connectedUser =============", connectedUser);
+
 const fetchEvents = async () => {
   try {
     state.calendarOptions.events = await axiosInstance
@@ -67,6 +70,7 @@ const handleDateSelect = (selectInfo) => {
 };
 
 const createEvent = () => {
+  if(connectedUser.role === 'rh' || connectedUser.role === 'admin'){
   axiosInstance
     .post("calendar/events", {
       summary: state.newEvent.title,
@@ -102,6 +106,7 @@ const createEvent = () => {
       // Fermer la modal en cas d'erreur
       state.openModal = false;
     });
+  }
 };
 
 const handleEventClick = (clickInfo) => {
@@ -116,6 +121,7 @@ const handleEventClick = (clickInfo) => {
 };
 
 const deleteEvent = () => {
+  if(connectedUser.role === 'rh' || connectedUser.role === 'admin'){
   if (
     confirm(
       `Are you sure you want to delete the event '${state.selectedEvent.title}'`
@@ -140,9 +146,11 @@ const deleteEvent = () => {
       end: "",
     };
   }
+  }
 };
 
 const updateEvent = () => {
+  if(connectedUser.role === 'rh' || connectedUser.role === 'admin'){
   axiosInstance
     .put("calendar/events/" + state.selectedEvent.id, {
       summary: state.newEvent.title,
@@ -172,6 +180,7 @@ const updateEvent = () => {
         end: "",
       };
     });
+  }
 };
 
 const closeModal = () => {
@@ -202,7 +211,7 @@ init();
       </div>
 
       <div
-        v-if="state.openModal"
+        v-if="connectedUser.role === 'rh' || connectedUser.role === 'admin' && state.openModal"
         class="fixed inset-0 flex items-center justify-center z-50"
       >
         <div class="fixed inset-0 bg-black opacity-60"></div>

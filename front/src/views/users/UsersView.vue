@@ -18,6 +18,9 @@ const init = async () => {
   await fetchCompanies();
 };
 
+const connectedUser = JSON.parse(localStorage.getItem("user"));
+
+
 const fetchUsers = async () => {
   try {
     state.users = await axiosInstance.get("users").then((response) => {
@@ -74,6 +77,7 @@ init();
         main
       >
         <BaseButton
+          v-if="connectedUser.role === 'rh' || connectedUser.role === 'admin'"
           href="/#/users/create"
           :icon="mdiPlus"
           label="Ajouter un utilisateur"
@@ -114,11 +118,18 @@ init();
                     scope="col"
                     class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
-                    Rôle
+                    Points
                   </th>
                   <th
                     scope="col"
                     class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                  >
+                    Rôle
+                  </th>
+                  <th                    
+                    scope="col"
+                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    v-if="connectedUser.role === 'rh' || connectedUser.role === 'admin'"
                   >
                     Actions
                   </th>
@@ -158,21 +169,56 @@ init();
                   </td>
                   <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                     <div class="text-gray-900">{{ person.title }}</div>
-                    <div class="mt-1 text-gray-500">{{ getCompanyName(person.companies[0]) }}</div>
+                    <div class="mt-1 text-gray-500">
+                      {{ getCompanyName(person.companies[0]) }}
+                    </div>
                   </td>
                   <td
                     class="whitespace-nowrap px-3 py-5 text-sm text-gray-500 text-center"
                   >
-                    <img
-                      class="h-12 w-12 mr-auto ml-auto"
-                      :src="`/levels/level-${person.level}.png`"
-                      alt="level"
-                    />
+                    <div class="relative w-fit">
+                      <img
+                        class="h-12 w-12"
+                        :src="`/levels/level-${person.level}.png`"
+                        alt="level"
+                      />
+                      <div
+                        class="absolute inset-0 flex items-center justify-center w-full"
+                      >
+                        <span
+                          class="inline-block rounded-full text-gray-500 text-center w-4 h-4 flex items-center justify-center"
+                          style="background-color: rgba(255, 255, 255, 0.7)"
+                        >
+                          {{ person.level }}
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-5">
+                    <div
+                      class="relative h-6 w-full bg-gray-300 rounded-md overflow-hidden"
+                    >
+                      <div
+                        class="absolute top-0 left-0 h-full bg-green-400 rounded-md z-neg-1"
+                        :style="{ width: `${(person.points / 1000) * 100}%` }"
+                      ></div>
+                      <div
+                        class="text-gray-600 text-center text-sm h-full flex items-center justify-center relative z-10"
+                      >
+                        {{ person.points }} / 1000
+                      </div>
+                    </div>
                   </td>
                   <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                    {{ person.role }}
+                    {{
+                      person.role === "admin"
+                        ? "Administrateur"
+                        : person.role === "employee"
+                        ? "Employé"
+                        : "R. Humaines"
+                    }}
                   </td>
-                  <td class="whitespace-nowrap px-3 py-5 text-sm">
+                  <td v-if="connectedUser.role === 'rh' || connectedUser.role === 'admin'" class="whitespace-nowrap px-3 py-5 text-sm">
                     <a
                       :href="`/#/users/update/${person._id}`"
                       class="text-black-300 hover:text-green-800 mr-2"
@@ -180,7 +226,7 @@ init();
                     </a>
                     <a
                       class="text-red-600 hover:text-red-800 cursor-pointer"
-                      @click="deleteUser(person._id)"
+                      @click="deleteUser(person._id)" 
                     >
                       <font-awesome-icon :icon="['fas', 'trash-alt']"
                     /></a>

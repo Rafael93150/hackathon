@@ -23,6 +23,9 @@ const fetchCompanies = async () => {
     console.error("Error fetching companies:", error);
   }
 };
+
+const connectedUser = JSON.parse(localStorage.getItem("user"));
+
 init();
 </script>
 <template>
@@ -34,6 +37,7 @@ init();
         main
       >
         <BaseButton
+          v-if="connectedUser.role === 'rh' || connectedUser.role === 'admin'"
           href="/#/companies/create"
           :icon="mdiPlus"
           label="Ajouter une entreprise"

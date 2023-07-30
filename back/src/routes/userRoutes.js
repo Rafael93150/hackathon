@@ -32,7 +32,7 @@ export const getUsers = async (req, res) => {
             }
         }
 
-        const users = await User.find(userQuery).select("-password");
+        const users = await User.find(userQuery).select("-password").populate("companies", "_id name logo");
         res.json(users);
     } catch (err) {
         res.status(500).json({

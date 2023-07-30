@@ -63,10 +63,14 @@
 </template>
 
 <script>
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { faStar } from "@fortawesome/free-regular-svg-icons";
 import { ref } from "vue";
 import { useMainStore } from "@/stores/main";
 import { showToast } from "@/utils/toast";
 
+library.add(faCheckCircle, faStar);
 const mainStore = useMainStore();
 
 export default {
