@@ -177,18 +177,16 @@ init();
                     />
                   </td>
                   <td class="whitespace-nowrap px-3 py-5">
-                    <div
-                      class="relative h-6 w-full bg-gray-300 rounded-md overflow-hidden"
-                    >
-                      <div
-                        class="absolute top-0 left-0 h-full bg-green-400 rounded-md z-neg-1"
-                        :style="{ width: `${(person.points / 1000) * 100}%` }"
-                      ></div>
-                      <div class="text-gray-600 text-center relative z-10">
-                        {{ person.points }} / 1000
-                      </div>
-                    </div>
-                  </td>
+    <div class="relative h-6 w-full bg-gray-300 rounded-md overflow-hidden">
+      <div
+        class="absolute top-0 left-0 h-full bg-green-400 rounded-md z-neg-1"
+        :style="{ width: `${(person.points / 1000) * 100}%` }"
+      ></div>
+      <div class="text-gray-600 text-center text-sm h-full flex items-center justify-center relative z-10">
+        {{ person.points }} / 1000
+      </div>
+    </div>
+  </td>
                   <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                     {{
                       person.role === "admin"
