@@ -1,5 +1,5 @@
 export const gradientBgBase = "bg-gradient-to-tr";
-export const gradientBgPurplePink = `${gradientBgBase} from-purple-400 via-pink-500 to-[#E53F49]`;
+export const gradientBgPurplePink = `${gradientBgBase} from-green-600 via-green-600 to-[#F3F4F6]`;
 export const gradientBgDark = `${gradientBgBase} from-slate-700 via-slate-900 to-slate-800`;
 export const gradientBgPinkRed = `${gradientBgBase} from-pink-400 via-[#E53F49] to-yellow-500`;
 

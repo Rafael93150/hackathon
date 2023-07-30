@@ -38,8 +38,10 @@ const submit = () => {
       <p class="text-center text-2xl text-white font-bold mb-6">
         {{ state.error }}
       </p>
-      <CardBox :class="cardClass" is-form @submit.prevent="submit">
-        <FormField label="Login" help="Please enter your login">
+
+      <CardBox :class="cardClass" is-form @submit.prevent="submit" class="w-full max-w-md">
+        <h1 class="text-center text-2xl text-black font-bold mb-12">Se connecter</h1>
+        <FormField label="Adresse email" class="text-sm" help="Veuillez entrer votre adresse email">
           <FormControl
             v-model="form.email"
             :icon="mdiAccount"
@@ -50,7 +52,7 @@ const submit = () => {
           />
         </FormField>
 
-        <FormField label="Password" help="Please enter your password">
+        <FormField label="Mot de passe" class="text-sm" help="Veuillez entrer votre mot de passe">
           <FormControl
             v-model="form.password"
             :icon="mdiAsterisk"
@@ -62,8 +64,8 @@ const submit = () => {
         </FormField>
 
         <template #footer>
-          <BaseButtons>
-            <BaseButton type="submit" color="info" label="Login"/>
+          <BaseButtons class="flex justify-center">
+            <BaseButton color="text-white bg-black" type="submit" label="Connexion"/>
           </BaseButtons>
         </template>
       </CardBox>
